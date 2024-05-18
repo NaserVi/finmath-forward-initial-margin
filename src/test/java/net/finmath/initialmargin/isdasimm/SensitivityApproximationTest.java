@@ -100,7 +100,7 @@ public class SensitivityApproximationTest {
 	private final WeightMode weightMode;
 
 	public static void main(String[] args) throws CalculationException {
-		SensitivityApproximationTest sat = new SensitivityApproximationTest(TestProductType.BERMUDANCALLABLE, WeightMode.TIMEDEPENDENT);
+		SensitivityApproximationTest sat = new SensitivityApproximationTest(TestProductType.SWAPS, WeightMode.TIMEDEPENDENT);
 		sat.test();
 	}
 

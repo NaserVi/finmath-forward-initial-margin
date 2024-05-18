@@ -45,7 +45,7 @@ public class CalculationSchemeInitialMarginISDA {
 				int row = i % correlationMatrixWithinSubCurve.length;
 				for (int j = 0; j < corrMatrix.length; j++) {
 					if (i == corrMatrix.length - 1 || i == corrMatrix.length - 2 || j == corrMatrix.length - 1 || j == corrMatrix.length - 2) {
-						corrMatrix[i][j] = new Double(0.0);
+						corrMatrix[i][j] = 0.0;
 						continue;
 					}
 
@@ -65,7 +65,7 @@ public class CalculationSchemeInitialMarginISDA {
 			// Set RiskClassThresholdMap
 			Map<String, Double[][]> innerMap = new HashMap<String, Double[][]>();
 			Double[][] value = new Double[1][1];
-			value[0][0] = new Double(250000000);
+			value[0][0] = 250000000.0;
 			innerMap.put("Regular_Volatility_Currencies", value); // or currency?
 			Map<String, Map<String, Double[][]>> secondMap = new HashMap<String, Map<String, Double[][]>>();
 			secondMap.put("INTEREST_RATE", innerMap);

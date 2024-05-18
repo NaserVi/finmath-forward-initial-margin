@@ -26,7 +26,7 @@ import net.finmath.marketdata.model.curves.DiscountCurveInterpolation;
 import net.finmath.marketdata.model.curves.ForwardCurve;
 import net.finmath.marketdata.model.curves.ForwardCurveInterpolation;
 import net.finmath.montecarlo.BrownianMotion;
-import net.finmath.montecarlo.BrownianMotionLazyInit;
+import net.finmath.montecarlo.BrownianMotionFromMersenneRandomNumbers;
 import net.finmath.montecarlo.RandomVariableFactory;
 import net.finmath.montecarlo.RandomVariableFromArrayFactory;
 import net.finmath.montecarlo.automaticdifferentiation.backward.RandomVariableDifferentiableAAD;
@@ -64,9 +64,9 @@ public class SIMMTest {
 	static final boolean isPrintPaths = false;
 
 	static final boolean isCalculatePortfolio = false;
-	static final boolean isCalculateSwap = false;
+	static final boolean isCalculateSwap = true;
 	static final boolean isCalculateSwaption = false;
-	static final boolean isCalculateBermudan = true;
+	static final boolean isCalculateBermudan = false;
 
 	// Model Paths
 	static final int numberOfPaths = 500;//1000;
@@ -483,7 +483,7 @@ public class SIMMTest {
 		/*
 		 * Create Brownian motions
 		 */
-		final BrownianMotion brownianMotion = new net.finmath.montecarlo.BrownianMotionLazyInit(timeDiscretizationFromArray, numberOfFactors, numberOfPaths, 31415 /* seed */, new RandomVariableFromArrayFactory(false));
+		final BrownianMotion brownianMotion = new BrownianMotionFromMersenneRandomNumbers(timeDiscretizationFromArray, numberOfFactors, numberOfPaths, 31415 /* seed */, new RandomVariableFromArrayFactory(false));
 
 		// Create a volatility model: Piecewise constant volatility calibrated to Swaption Normal implied volatility of December 8, 2017
 		double[] volatility = new double[]{
@@ -560,12 +560,12 @@ public class SIMMTest {
 
 		EulerSchemeFromProcessModel process = new EulerSchemeFromProcessModel(liborMarketModel, brownianMotion, EulerSchemeFromProcessModel.Scheme.EULER_FUNCTIONAL);
 
-		return new LIBORMonteCarloSimulationFromLIBORModel(liborMarketModel, process);
+		return new LIBORMonteCarloSimulationFromLIBORModel(process);
 	}
 
 	public static RandomVariableFactory createRandomVariableFactoryAAD() {
 		Map<String, Object> properties = new HashMap<String, Object>();
-		properties.put("isGradientRetainsLeafNodesOnly", new Boolean(false));
+		properties.put("isGradientRetainsLeafNodesOnly", false);
 		return new RandomVariableDifferentiableAADFactory(new RandomVariableFromArrayFactory(false), properties);
 	}
 
@@ -582,7 +582,7 @@ public class SIMMTest {
 
 		// Set brownian motion with one path
 		BrownianMotion originalBM = model.getBrownianMotion();
-		BrownianMotion brownianMotion = new BrownianMotionLazyInit(originalBM.getTimeDiscretization(), originalBM.getNumberOfFactors(), 1 /* numberOfPaths */, 3141);
+		BrownianMotion brownianMotion = new BrownianMotionFromMersenneRandomNumbers(originalBM.getTimeDiscretization(), originalBM.getNumberOfFactors(), 1 /* numberOfPaths */, 3141);
 
 		// Create zero volatility model
 		LIBORVolatilityModel volatilityModel = new LIBORVolatilityModelPiecewiseConstant(abstractRandomVariableFactory, model.getTimeDiscretization(), model.getLiborPeriodDiscretization(), new TimeDiscretizationFromArray(0.00, 1.0, 2.0, 5.0, 10.0, 20.0, 30.0), new TimeDiscretizationFromArray(0.00, 1.0, 2.0, 5.0, 10.0, 20.0, 30.0), new double[]{0.0}/*volatility*/, false);
@@ -605,7 +605,7 @@ public class SIMMTest {
 		// Get process
 		EulerSchemeFromProcessModel process = new EulerSchemeFromProcessModel(liborModelModified, brownianMotion, EulerSchemeFromProcessModel.Scheme.EULER_FUNCTIONAL);
 
-		return new LIBORMonteCarloSimulationFromLIBORModel(liborModelModified, process);
+		return new LIBORMonteCarloSimulationFromLIBORModel(process);
 	}
 
 	public static Map<String, Object> getModelPropertiesMap(LIBORMarketModelFromCovarianceModel.Measure measure, LIBORMarketModelFromCovarianceModel.StateSpace stateSpace) {
@@ -714,10 +714,10 @@ public class SIMMTest {
 
 		// Set calibration properties (should use our brownianMotion for calibration - needed to have to right correlation).
 		Map<String, Object> calibrationParameters = new HashMap<String, Object>();
-		calibrationParameters.put("accuracy", new Double(accuracy));
+		calibrationParameters.put("accuracy", accuracy);
 		calibrationParameters.put("brownianMotion", brownianMotion);
 		calibrationParameters.put("optimizerFactory", optimizerFactory);
-		calibrationParameters.put("parameterStep", new Double(parameterStep));
+		calibrationParameters.put("parameterStep", parameterStep);
 		properties.put("calibrationParameters", calibrationParameters);
 
 		return properties;
@@ -729,7 +729,7 @@ public class SIMMTest {
 
 	public static double[] getTargetValuesUnderCalibratedModel(LIBORModel liborMarketModelCalibrated, BrownianMotion brownianMotion, CalibrationProduct[] calibrationItems) {
 		EulerSchemeFromProcessModel process = new EulerSchemeFromProcessModel(liborMarketModelCalibrated, brownianMotion);
-		LIBORModelMonteCarloSimulationModel simulationCalibrated = new LIBORMonteCarloSimulationFromLIBORModel(liborMarketModelCalibrated, process);
+		LIBORModelMonteCarloSimulationModel simulationCalibrated = new LIBORMonteCarloSimulationFromLIBORModel(process);
 
 		double[] valueModel = new double[calibrationItems.length];
 		for (int i = 0; i < calibrationItems.length; i++) {

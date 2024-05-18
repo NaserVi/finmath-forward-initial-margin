@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.14" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="lch.initialmargin.swapclear.sensitivities.AbstractSensitvities" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/swapclear/sensitivities/AbstractSensitvities.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="516" y="728"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="2" language="java" name="lch.initialmargin.swapclear.sensitivities.AbstractSensitvities.Derivative" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/swapclear/sensitivities/AbstractSensitvities.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="213" x="4" y="426"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <enumeration id="3" language="java" name="lch.initialmargin.swapclear.sensitivities.DiscountFactor.Discounting" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/swapclear/sensitivities/DiscountFactor.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1139" y="1077"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <enumeration id="4" language="java" name="lch.initialmargin.swapclear.sensitivities.DiscountFactor.DiscountDate" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/swapclear/sensitivities/DiscountFactor.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1139" y="925"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="5" language="java" name="lch.initialmargin.swapclear.sensitivities.DiscountFactor" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/swapclear/sensitivities/DiscountFactor.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="862" y="1005"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="6" language="java" name="lch.initialmargin.swapclear.sensitivities.Sensitivities" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/swapclear/sensitivities/Sensitivities.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="320" x="356" y="426"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="7" language="java" name="lch.initialmargin.swapclear.sensitivities.SensitivityComponent" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/swapclear/sensitivities/SensitivityComponent.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="496" x="727" y="607"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="lch.initialmargin.swapclear.sensitivities.SensitivityComponentsForSwapLeg" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/swapclear/sensitivities/SensitivityComponentsForSwapLeg.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="504" x="719" y="326"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="lch.initialmargin.swapclear.sensitivities.ForwardSensitivities" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/swapclear/sensitivities/ForwardSensitivities.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="274" x="424" y="1001"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="lch.initialmargin.swapclear.sensitivities.DiscountSensitivities" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/swapclear/sensitivities/DiscountSensitivities.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="273" x="4" y="788"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="lch.initialmargin.swapclear.sensitivities.ForwardAndDiscountSensitivities" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/swapclear/sensitivities/ForwardAndDiscountSensitivities.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="134" width="274" x="4" y="1002"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="lch.initialmargin.simulation.modeldata.TenorGrid" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/simulation/modeldata/TenorGrid.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="171" width="250" x="4" y="577"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="lch.initialmargin.swapclear.products.components.LchSwapLeg" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/swapclear/products/components/LchSwapLeg.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="261" width="599" x="624" y="26"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="lch.initialmargin.simulation.modeldata.ZeroRateModel" 
+    project="master-thesis-LCH-sketch" 
+    file="/master-thesis-LCH-sketch/src/main/java/lch/initialmargin/simulation/modeldata/ZeroRateModel.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="351" width="498" x="4" y="26"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <realization id="15">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <association id="16">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="17" name="discountSensitivities">        
+        <position height="18" width="106" x="31" y="957"/>      
+      </attribute>      
+      <multiplicity id="18" minimum="0" maximum="1">        
+        <position height="16" width="23" x="143" y="958"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="19">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="20">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="21" name="discountCurveModel">        
+        <position height="18" width="106" x="587" y="304"/>      
+      </attribute>      
+      <multiplicity id="22" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-14" y="46"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="23">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="24">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="25" name="sensitivityComponentsForSwapLeg">        
+        <position height="18" width="181" x="562" y="580"/>      
+      </attribute>      
+      <multiplicity id="26" minimum="0" maximum="1">        
+        <position height="16" width="23" x="748" y="582"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="27">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="28" name="forwardCurveModel">        
+        <position height="18" width="105" x="511" y="353"/>      
+      </attribute>      
+      <multiplicity id="29" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-14" y="46"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="30">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="31" name="tenorGrid">        
+        <position height="0" width="0" x="17" y="87"/>      
+      </attribute>      
+      <multiplicity id="32" minimum="0" maximum="1">        
+        <position height="0" width="0" x="17" y="87"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="33">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="34" name="swapLegs">        
+        <position height="18" width="60" x="884" y="299"/>      
+      </attribute>      
+      <multiplicity id="35" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="952" y="301"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="36">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="37" name="sensitivityComponents">        
+        <position height="0" width="0" x="-83" y="-37"/>      
+      </attribute>      
+      <multiplicity id="38" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-83" y="-37"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="39">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </nesting>  
+  <generalization id="40">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <nesting id="41">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </nesting>  
+  <nesting id="42">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="3"/>  
+  </nesting>  
+  <association id="43">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="44" name="forwardSensitivities">        
+        <position height="18" width="105" x="299" y="1051"/>      
+      </attribute>      
+      <multiplicity id="45" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-300" y="372"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="46">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="47" name="discountFactors">        
+        <position height="0" width="0" x="-456" y="230"/>      
+      </attribute>      
+      <multiplicity id="48" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="913" y="884"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

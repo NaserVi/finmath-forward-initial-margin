@@ -13,7 +13,8 @@
 		<src.main.java.dir>src/main/java</src.main.java.dir>
 		<src.test.java.dir>src/test/java</src.test.java.dir>
 		<junit.version>5.6.2</junit.version>
-		<finmath-lib.version>6.0.18</finmath-lib.version>
+		<finmath-lib.version>6.0.19</finmath-lib.version>
+		<finmath-plot.version>0.4.5</finmath-plot.version>
 	</properties>
 
 	<developers>
@@ -38,6 +39,12 @@
 		<developer>
 			<id>delre</id>
 			<name>Luca Del Re</name>
+			<timezone>1</timezone>
+		</developer>
+		<developer>
+			<id>raph</id>
+			<name>Raphael Prandtl</name>
+			<email>raphael.prandtl@gmail.com</email>
 			<timezone>1</timezone>
 		</developer>
 	</developers>
@@ -94,6 +101,11 @@
 			<version>${finmath-lib.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>net.finmath</groupId>
+			<artifactId>finmath-lib-plot-extensions</artifactId>
+			<version>${finmath-plot.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
 			<version>3.6.1</version>
@@ -131,6 +143,54 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>29.0-jre</version>
+		</dependency>
+		<!-- Java FX -->
+		<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-base -->
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-base</artifactId>
+			<version>11.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>11.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-swing</artifactId>
+			<version>11.0.2</version>
+		</dependency>
+		<!-- apache poi -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>5.2.3</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>5.2.3</version>
+		</dependency>
+		<!-- junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.1</version>
+		</dependency>
+		
+		<!-- Log4j2 API -->
+		<dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-api</artifactId>
+		    <version>2.17.1</version>
+		</dependency>
+
+		<!-- Log4j2 Core -->
+		<dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-core</artifactId>
+		    <version>2.17.1</version>
 		</dependency>
 	</dependencies>
 

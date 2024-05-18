@@ -40,6 +40,7 @@ import net.finmath.montecarlo.interestrate.models.covariance.LIBORCovarianceMode
 import net.finmath.montecarlo.interestrate.models.covariance.LIBORVolatilityModel;
 import net.finmath.montecarlo.interestrate.models.covariance.LIBORVolatilityModelFromGivenMatrix;
 import net.finmath.montecarlo.interestrate.products.TermStructureMonteCarloProduct;
+import net.finmath.montecarlo.BrownianMotionFromMersenneRandomNumbers;
 import net.finmath.montecarlo.process.EulerSchemeFromProcessModel;
 import net.finmath.stochastic.RandomVariable;
 import net.finmath.time.Schedule;
@@ -136,6 +137,7 @@ public class SwapAnalyticVsAADSensitivities {
 	 * @return
 	 * @throws CalculationException
 	 */
+	
 	public RandomVariable[] getAnalyticSwapLiborSensitivities(double evaluationTime,
 			double periodLength,
 			double[] fixingDates,
@@ -177,6 +179,7 @@ public class SwapAnalyticVsAADSensitivities {
 		if (this.gradient == null) {
 			RandomVariableDifferentiable value = (RandomVariableDifferentiable) product.getValue(0.0, model);
 			this.gradient = value.getGradient();
+;
 		}
 
 		MonteCarloConditionalExpectationRegression cOperator = getConditionalExpectationOperator(evaluationTime, model);
@@ -304,11 +307,11 @@ public class SwapAnalyticVsAADSensitivities {
 
 		LIBORMarketModel liborMarketModel = LIBORMarketModelFromCovarianceModel.of(liborPeriodDiscretization, null, forwardCurve, appliedDiscountCurve, abstractRandomVariableFactory, covarianceModel, calibrationItems, properties);
 
-		BrownianMotion brownianMotion = new net.finmath.montecarlo.BrownianMotionLazyInit(timeDiscretizationFromArray, numberOfFactors, numberOfPaths, 3141 /* seed */);
+		BrownianMotion brownianMotion = new BrownianMotionFromMersenneRandomNumbers(timeDiscretizationFromArray, numberOfFactors, numberOfPaths, 3141 /* seed */);
 
 		EulerSchemeFromProcessModel process = new EulerSchemeFromProcessModel(liborMarketModel, brownianMotion, EulerSchemeFromProcessModel.Scheme.EULER_FUNCTIONAL);
 
-		return new LIBORMonteCarloSimulationFromLIBORModel(liborMarketModel, process);
+		return new LIBORMonteCarloSimulationFromLIBORModel(process);
 	}
 
 	public static TermStructureMonteCarloProduct[] createSwaps(String[] maturities) {
@@ -358,7 +361,7 @@ public class SwapAnalyticVsAADSensitivities {
 
 	public static RandomVariableFactory createRandomVariableFactoryAAD() {
 		Map<String, Object> properties = new HashMap<String, Object>();
-		properties.put("isGradientRetainsLeafNodesOnly", new Boolean(false));
+		properties.put("isGradientRetainsLeafNodesOnly", false);
 		return new RandomVariableDifferentiableAADFactory(new RandomVariableFromArrayFactory(), properties);
 	}
 
