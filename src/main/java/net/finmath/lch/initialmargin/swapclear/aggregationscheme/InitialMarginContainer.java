@@ -3,9 +3,9 @@ package net.finmath.lch.initialmargin.swapclear.aggregationscheme;
 import java.util.HashMap;
 
 import net.finmath.lch.initialmargin.simulation.modeldata.RandomVariableSeries;
-import net.finmath.lch.initialmargin.simulation.modeldata.StochasticCurve;
 import net.finmath.lch.initialmargin.simulation.scenarios.CurveScenarios;
 import net.finmath.lch.initialmargin.simulation.scenarios.ScenarioFactory.Simulation;
+import net.finmath.lch.initialmargin.swapclear.sensitivities.SensitivityMatrix;
 
 
 /**
@@ -15,8 +15,8 @@ public class InitialMarginContainer {
 	
     private HashMap<Simulation, RandomVariableSeries>  		pnlSeries;
     private HashMap<Simulation, CurveScenarios>  			curveScenarios;
-    private StochasticCurve 								deltaSensitivities;
-    private StochasticCurve	 								gammaSensitivities;
+    private SensitivityMatrix 								deltaSensitivities;
+    private SensitivityMatrix	 							gammaSensitivities;
 
 
 
@@ -38,12 +38,12 @@ public class InitialMarginContainer {
     }
     
     
-    public void setDeltaSensitivities(StochasticCurve deltaSensitivities) {
+    public void setDeltaSensitivities(SensitivityMatrix deltaSensitivities) {
     	this.deltaSensitivities = deltaSensitivities;
     }    
     
     
-    public void setGammaSensitivities(StochasticCurve gammaSensitivities) {
+    public void setGammaSensitivities(SensitivityMatrix gammaSensitivities) {
     	this.gammaSensitivities = gammaSensitivities;
     }
     
@@ -58,12 +58,12 @@ public class InitialMarginContainer {
     }
 
     
-    public StochasticCurve getDeltaSensitivities() {
+    public SensitivityMatrix getDeltaSensitivities() {
     	return deltaSensitivities;
     }
     
     
-    public StochasticCurve getGammaSensitivities() {
+    public SensitivityMatrix getGammaSensitivities() {
     	return gammaSensitivities;
     }
     

@@ -3,7 +3,6 @@ package net.finmath.lch.initialmargin.swapclear.sensitivities;
 
 import java.time.LocalDateTime;
 
-import net.finmath.lch.initialmargin.simulation.modeldata.StochasticCurve;
 import net.finmath.exception.CalculationException;
 
 /**
@@ -12,21 +11,21 @@ import net.finmath.exception.CalculationException;
 public interface Sensitivities {
 	
 	/**
-	 * Calculates the delta sensitivities mapped to fixed curve points
+	 * Calculates the delta sensitivities mapped to a fixed grid of standard tenors
 	 * @param evaluationDate The date of the evaluation
 	 * @return The StochasticCurve with all delta sensitivities mapped to fixed tenor points
 	 * @throws CalculationException
 	 */
-	public StochasticCurve getDeltaSensitivities(LocalDateTime evaluationDate) throws CalculationException;
+	public SensitivityMatrix getDeltaSensitivities(LocalDateTime evaluationDate) throws CalculationException;
 
 	
 	/**
-	 * Calculates the gamma sensitivities mapped to fixed curve points
+	 * Calculates the gamma sensitivities mapped to a fixed grid of standard tenors
 	 * @param evaluationDate The date of the evaluation
 	 * @return The StochasticCurve with all sensitivities mapped to fixed tenor points
 	 * @throws CalculationException
 	 */
-	public StochasticCurve getGammaSensitivities(LocalDateTime evaluationDate) throws CalculationException;
+	public SensitivityMatrix getGammaSensitivities(LocalDateTime evaluationDate) throws CalculationException;
 			
 
 }

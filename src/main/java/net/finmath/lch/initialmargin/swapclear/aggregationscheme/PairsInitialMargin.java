@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.TreeMap;
 
 import net.finmath.lch.initialmargin.simulation.modeldata.RandomVariableSeries;
-import net.finmath.lch.initialmargin.simulation.modeldata.StochasticCurve;
 import net.finmath.lch.initialmargin.simulation.modeldata.TenorGridFactory;
 import net.finmath.lch.initialmargin.simulation.modeldata.ZeroRateModel;
 import net.finmath.lch.initialmargin.simulation.modeldata.TenorGridFactory.GridType;
@@ -22,6 +22,7 @@ import net.finmath.lch.initialmargin.swapclear.products.components.LchSwapLeg;
 import net.finmath.lch.initialmargin.swapclear.sensitivities.ForwardAndDiscountSensitivities;
 import net.finmath.lch.initialmargin.swapclear.sensitivities.Sensitivities;
 import net.finmath.lch.initialmargin.swapclear.sensitivities.SensitivityComponentsForSwapLeg;
+import net.finmath.lch.initialmargin.swapclear.sensitivities.SensitivityMatrix;
 import net.finmath.exception.CalculationException;
 import net.finmath.montecarlo.RandomVariableFromDoubleArray;
 import net.finmath.stochastic.RandomVariable;
@@ -172,8 +173,8 @@ public class PairsInitialMargin {
 		// -> Forward and discount risk can be combined and evaluated under the same scenarios
 		// 2. Calculate delta and gamma sensitivities of the portfolio under the same curve
 		Sensitivities sensitivities = new ForwardAndDiscountSensitivities(sensitivityComponents, TenorGridFactory.getTenorGrid(GridType.INITIAL_MARGIN_RISK_GRID)); // Risk is sampled on the "fixed grid in zero space"
-		StochasticCurve delta = sensitivities.getDeltaSensitivities(evaluationDate);
-		StochasticCurve gamma = sensitivities.getGammaSensitivities(evaluationDate);
+		SensitivityMatrix delta = sensitivities.getDeltaSensitivities(evaluationDate);
+		SensitivityMatrix gamma = sensitivities.getGammaSensitivities(evaluationDate);
 		// Add results to the initial margin data container
 		initialMarginContainer.setDeltaSensitivities(delta);
 		initialMarginContainer.setGammaSensitivities(gamma);
@@ -197,14 +198,36 @@ public class PairsInitialMargin {
 		CurveScenarios curveScenarios = new CurveScenarios();
 		// Directly aggregated element-wise PnL calculations
 		RandomVariableSeries pnLSeries = new RandomVariableSeries();
-		// Maturities of the discount factors are the same for delta and gamma -> same tenor points of delta and gamma scenarios 
-		for (Map.Entry<Double, RandomVariable> sensitivity : initialMarginContainer.getDeltaSensitivities().getCurve().entrySet()) {
-			RandomVariableSeries tenorPointScenario = scenarios.getTenorPointScenarios(evaluationDate, sensitivity.getKey());
-			// Add the tenorPointScenario to the TenorGridSeries for later curve construction
-			curveScenarios.addSeries(sensitivity.getKey(), tenorPointScenario);
-			// Multiply the tenorPointScenario with the sensitivity on that tenor point and add it to the PnL results
-			pnLSeries.sum(multiplyScenariosWithSensitivity(tenorPointScenario, sensitivity.getValue(), 1)); // Delta
-			pnLSeries.sum(multiplyScenariosWithSensitivity(tenorPointScenario, initialMarginContainer.getGammaSensitivities().getCurve().get(sensitivity.getKey()), 2)); // Gamma
+		// We map forward and discount sensitivities to the same matrix -> gamma matrix contains all necessary fixing points
+		// Loop through all rows of the matrix
+		for (Map.Entry<Double, TreeMap<Double, RandomVariable>> row : initialMarginContainer.getGammaSensitivities().getSensitivityMatrix().entrySet()) {
+			// if scenarios for row fixing is already contained in curveScenarios return it else created it
+			RandomVariableSeries rowScenarios;
+			if (curveScenarios.containsSeries(row.getKey())) {
+				rowScenarios = curveScenarios.getSeries(row.getKey());
+			} else {
+				rowScenarios = scenarios.getTenorPointScenarios(evaluationDate, row.getKey());
+				// Add the tenorPointScenario to the TenorGridSeries for later curve construction
+				curveScenarios.addSeries(row.getKey(), rowScenarios);
+			}
+			// Delta sensitivities are always on the diagonal entries and fixings determined by the row entries -> just one delta sensitivity per row
+			// Multiply the tenorPointScenario with the delta sensitivity and add it to the PnL results
+			pnLSeries.sum(getFirstOrderTaylorTerm(rowScenarios, initialMarginContainer.getDeltaSensitivities().getSensitivityMatrix().get(row.getKey()).get(row.getKey()))); // Delta
+			// Loop through all columns of the matrix	
+			for (Map.Entry<Double, RandomVariable> column : row.getValue().entrySet()) {
+				// if scenarios for column fixing is already contained in curveScenarios return it else created it
+				RandomVariableSeries columnScenarios;
+				if (curveScenarios.containsSeries(column.getKey())) {
+					columnScenarios = curveScenarios.getSeries(column.getKey());
+				} else {
+					columnScenarios = scenarios.getTenorPointScenarios(evaluationDate, column.getKey());
+					// Add the tenorPointScenario to the TenorGridSeries for later curve construction
+					curveScenarios.addSeries(column.getKey(), columnScenarios);
+				}
+				// Gamma sensitivities on upper triangle matrix and rely on two scenario series
+				// Multiply the tenorPointScenarios with the gamma sensitivity and add it to the PnL results
+				pnLSeries.sum(getSecondOrderTaylorTerm(rowScenarios, columnScenarios, row.getValue().get(column.getKey()))); // Gamma
+			}
 		}
 		// Add results to the initial margin data container
 		initialMarginContainer.setCurveScenarios(simulation, curveScenarios);
@@ -217,14 +240,25 @@ public class PairsInitialMargin {
 	 * The entries of the vector are the pillar points on which the scenarios and sensitivities are sampled.
 	 * This method equals the element-wise multiplication of the i-th entries
 	 */
-	private static RandomVariableSeries multiplyScenariosWithSensitivity(RandomVariableSeries tenorPointScenario, RandomVariable sensitivity, int exponent) {
+	private static RandomVariableSeries getFirstOrderTaylorTerm(RandomVariableSeries tenorPointScenario, RandomVariable sensitivity) {
 		HashMap<LocalDateTime, RandomVariable> pnlOnTenorPoint = new HashMap<>();
 		for (Map.Entry<LocalDateTime, RandomVariable> shift : tenorPointScenario.getSeries().entrySet()) {
-			pnlOnTenorPoint.put(shift.getKey(), shift.getValue().mult(DECIMAL_TO_BASIS_POINT_CONVERSION_FACTOR).pow(exponent).mult(sensitivity));
+			pnlOnTenorPoint.put(shift.getKey(), shift.getValue().mult(DECIMAL_TO_BASIS_POINT_CONVERSION_FACTOR).mult(sensitivity));
 		}
 		return new RandomVariableSeries(pnlOnTenorPoint);
 	}
 
+	
+	private static RandomVariableSeries getSecondOrderTaylorTerm(RandomVariableSeries firstTenorPointScenario, RandomVariableSeries secondTenorPointScenario, RandomVariable sensitivity) {
+		HashMap<LocalDateTime, RandomVariable> pnlOnTenorPoint = new HashMap<>();
+		for (Map.Entry<LocalDateTime, RandomVariable> shift : firstTenorPointScenario.getSeries().entrySet()) {
+			RandomVariable secondShift = secondTenorPointScenario.getSeries().get(shift.getKey());
+			pnlOnTenorPoint.put(shift.getKey(), shift.getValue().mult(secondShift).mult(DECIMAL_TO_BASIS_POINT_CONVERSION_FACTOR * DECIMAL_TO_BASIS_POINT_CONVERSION_FACTOR).mult(sensitivity).mult(0.5));
+		}
+		return new RandomVariableSeries(pnlOnTenorPoint);
+	}
+	
+	
 	// Total revaluation of the portfolio under the n worst scenerios
 	private static List<RandomVariable> getNWorstLosses(LocalDateTime evaluationDate, LocalPortfolio localPortfolio, ZeroRateModel zeroRateModel, InitialMarginContainer initialMarginContainer, Simulation simulation, int numberOfLosses, Integer pathOrState) throws CalculationException {
 		List<RandomVariable> worstLosses = new ArrayList<RandomVariable>(Collections.nCopies(numberOfLosses, new Scalar(0.0)));

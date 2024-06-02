@@ -47,7 +47,7 @@ public class ModelFactory {
 	public static LIBORModelMonteCarloSimulationModel getModel(CurveName curveName) throws CalculationException {
 		switch (curveName) {
 		case EUR_EURIBOR_3M:
-			final int numberOfPaths = 1000;
+			final int numberOfPaths = 100;
 			final int numberOfFactors = 1;
 			final double[] zeroRateFixings = new double[] {0.0, 0.2493151, 0.4986301, 0.7479452, 1.0000000, 1.4986301, 2.0000000, 3.0000000, 4.0000000, 5.0000000, 6.0000000, 7.0000000, 8.0000000, 9.0000000, 10.0000000, 12.0000000, 15.0000000, 20.0000000, 25.0000000, 30.0000000, 35.0000000, 40.0000000, 50.0000000, 60.0000000};	
 			final double[] zeroRates = new double[]{0.0, 0.039679454, 0.038092025, 0.036301049, 0.034411283, 0.03127043, 0.029134774, 0.026978123, 0.026084691, 0.02578301, 0.025724468, 0.025808707, 0.025986709, 0.026228892, 0.026532052, 0.02712804, 0.02767065, 0.027235979, 0.026004347, 0.024754381, 0.023677185, 0.022869038, 0.021163335, 0.019995148};

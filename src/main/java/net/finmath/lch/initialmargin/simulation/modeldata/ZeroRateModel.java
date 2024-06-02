@@ -127,11 +127,11 @@ public class ZeroRateModel {
 		// check if periodLength exceeds minimal or maximal periodLenght available in history.
 		// Necessary for scenario sampling of "xM" curves, e.g. 3M LIBOR. Since historical data set starts with 3M fixing and if sensitivities for 1d point call the respective scenarios for 1d 
 		// we need a constant extrapolation of the 3M point and adjust the model rates fixing to "continue" with this fixing
-		if (periodLength < zeroCurves.firstEntry().getValue().getSmallestFixing()) {
-			periodLength = zeroCurves.firstEntry().getValue().getSmallestFixing();
+		if (periodLength < zeroCurves.firstEntry().getValue().getFixingSmallest()) {
+			periodLength = zeroCurves.firstEntry().getValue().getFixingSmallest();
 		}
-		if (periodLength > zeroCurves.firstEntry().getValue().getGreatestFixing()) {
-			periodLength = zeroCurves.firstEntry().getValue().getGreatestFixing();
+		if (periodLength > zeroCurves.firstEntry().getValue().getFixingGreatest()) {
+			periodLength = zeroCurves.firstEntry().getValue().getFixingGreatest();
 		}
 		NavigableMap<LocalDateTime, RandomVariable> rateSeries = new TreeMap<>();
 		// Returns the rate series from the beginning of available data until the cutoff date (inclusive)

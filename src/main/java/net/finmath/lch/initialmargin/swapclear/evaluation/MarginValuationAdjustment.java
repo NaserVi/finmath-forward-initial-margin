@@ -13,7 +13,6 @@ import java.util.PriorityQueue;
 import java.util.TreeMap;
 
 import net.finmath.lch.initialmargin.simulation.modeldata.RandomVariableSeries;
-import net.finmath.lch.initialmargin.simulation.modeldata.StochasticCurve;
 import net.finmath.lch.initialmargin.simulation.modeldata.TenorGridFactory;
 import net.finmath.lch.initialmargin.simulation.modeldata.ZeroRateModel;
 import net.finmath.lch.initialmargin.simulation.modeldata.TenorGridFactory.GridType;
@@ -29,6 +28,7 @@ import net.finmath.lch.initialmargin.swapclear.products.LocalPortfolio;
 import net.finmath.lch.initialmargin.swapclear.products.components.LchSwapLeg;
 import net.finmath.lch.initialmargin.swapclear.sensitivities.ForwardAndDiscountSensitivities;
 import net.finmath.lch.initialmargin.swapclear.sensitivities.SensitivityComponentsForSwapLeg;
+import net.finmath.lch.initialmargin.swapclear.sensitivities.SensitivityMatrix;
 import net.finmath.exception.CalculationException;
 
 import net.finmath.montecarlo.RandomVariableFromDoubleArray;
@@ -173,19 +173,43 @@ public class MarginValuationAdjustment {
 	
 	
 	public static RandomVariable getInitialMarginWithTaylorPnL(LocalDateTime evaluationDate, ZeroRateModel zeroRateModel, ForwardAndDiscountSensitivities sensitivities, ScenarioFactory scenarios, Simulation simulation, boolean pathWiseEvaluation, boolean movingScenarioWindow) throws CalculationException {	
-		RandomVariableSeries pnLSeries = new RandomVariableSeries();
-		StochasticCurve deltaCurve = sensitivities.getDeltaSensitivities(evaluationDate);
-		StochasticCurve gammaCurve = sensitivities.getGammaSensitivities(evaluationDate);
+		SensitivityMatrix deltaMatrix = sensitivities.getDeltaSensitivities(evaluationDate);
+		SensitivityMatrix gammaMatrix = sensitivities.getGammaSensitivities(evaluationDate);
 
-		for (Map.Entry<Double, RandomVariable> sensitivity : deltaCurve.getCurve().entrySet()) {
-			LocalDateTime scenarioDate = evaluationDate;
-			if(!movingScenarioWindow) {
-				scenarioDate = zeroRateModel.getReferenceDate();
+		// Store tenor point scenarios to construct the shifted curves for full swap revaluation after PnL comparison
+		CurveScenarios curveScenarios = new CurveScenarios();
+		// Directly aggregated element-wise PnL calculations
+		RandomVariableSeries pnLSeries = new RandomVariableSeries();
+		// We map forward and discount sensitivities to the same matrix -> gamma matrix contains all necessary fixing points
+		// Loop through all rows of the matrix
+		for (Map.Entry<Double, TreeMap<Double, RandomVariable>> row : gammaMatrix.getSensitivityMatrix().entrySet()) {
+			// if scenarios for row fixing is already contained in curveScenarios return it else created it
+			RandomVariableSeries rowScenarios;
+			if (curveScenarios.containsSeries(row.getKey())) {
+				rowScenarios = curveScenarios.getSeries(row.getKey());
+			} else {
+				rowScenarios = scenarios.getTenorPointScenarios(evaluationDate, row.getKey());
+				// Add the tenorPointScenario to the TenorGridSeries for later curve construction
+				curveScenarios.addSeries(row.getKey(), rowScenarios);
 			}
-			RandomVariableSeries tenorPointScenario = scenarios.getTenorPointScenarios(scenarioDate, sensitivity.getKey());
-			// Multiply the tenorPointScenario with the sensitivity on that tenor point and add it to the PnL results
-			pnLSeries.sum(multiplyScenariosWithSensitivity(tenorPointScenario, sensitivity.getValue(), 1)); // Delta
-			pnLSeries.sum(multiplyScenariosWithSensitivity(tenorPointScenario, gammaCurve.getCurve().get(sensitivity.getKey()), 2)); // Gamma
+			// Delta sensitivities are always on the diagonal entries and fixings determined by the row entries -> just one delta sensitivity per row
+			// Multiply the tenorPointScenario with the delta sensitivity and add it to the PnL results
+			pnLSeries.sum(getFirstOrderTaylorTerm(rowScenarios, deltaMatrix.getSensitivityMatrix().get(row.getKey()).get(row.getKey()))); // Delta
+			// Loop through all columns of the matrix	
+			for (Map.Entry<Double, RandomVariable> column : row.getValue().entrySet()) {
+				// if scenarios for column fixing is already contained in curveScenarios return it else created it
+				RandomVariableSeries columnScenarios;
+				if (curveScenarios.containsSeries(column.getKey())) {
+					columnScenarios = curveScenarios.getSeries(column.getKey());
+				} else {
+					columnScenarios = scenarios.getTenorPointScenarios(evaluationDate, column.getKey());
+					// Add the tenorPointScenario to the TenorGridSeries for later curve construction
+					curveScenarios.addSeries(column.getKey(), columnScenarios);
+				}
+				// Gamma sensitivities on upper triangle matrix and rely on two scenario series
+				// Multiply the tenorPointScenarios with the gamma sensitivity and add it to the PnL results
+				pnLSeries.sum(getSecondOrderTaylorTerm(rowScenarios, columnScenarios, row.getValue().get(column.getKey()))); // Gamma
+			}
 		}
 		RandomVariable initialMargin;
 		if (pathWiseEvaluation) {
@@ -357,10 +381,20 @@ public class MarginValuationAdjustment {
 	}
 		
 	
-	private static RandomVariableSeries multiplyScenariosWithSensitivity(RandomVariableSeries tenorPointScenario, RandomVariable sensitivity, int exponent) {
+	private static RandomVariableSeries getFirstOrderTaylorTerm(RandomVariableSeries tenorPointScenario, RandomVariable sensitivity) {
 		HashMap<LocalDateTime, RandomVariable> pnlOnTenorPoint = new HashMap<>();
 		for (Map.Entry<LocalDateTime, RandomVariable> shift : tenorPointScenario.getSeries().entrySet()) {
-			pnlOnTenorPoint.put(shift.getKey(), shift.getValue().mult(10000).pow(exponent).mult(sensitivity));
+			pnlOnTenorPoint.put(shift.getKey(), shift.getValue().mult(10000).mult(sensitivity));
+		}
+		return new RandomVariableSeries(pnlOnTenorPoint);
+	}
+
+	
+	private static RandomVariableSeries getSecondOrderTaylorTerm(RandomVariableSeries firstTenorPointScenario, RandomVariableSeries secondTenorPointScenario, RandomVariable sensitivity) {
+		HashMap<LocalDateTime, RandomVariable> pnlOnTenorPoint = new HashMap<>();
+		for (Map.Entry<LocalDateTime, RandomVariable> shift : firstTenorPointScenario.getSeries().entrySet()) {
+			RandomVariable secondShift = secondTenorPointScenario.getSeries().get(shift.getKey());
+			pnlOnTenorPoint.put(shift.getKey(), shift.getValue().mult(secondShift).mult(10000 * 10000).mult(sensitivity).mult(0.5));
 		}
 		return new RandomVariableSeries(pnlOnTenorPoint);
 	}
@@ -369,19 +403,27 @@ public class MarginValuationAdjustment {
 	private static List<RandomVariable> getLossesUnderFullRevaluation(LocalDateTime evaluationDate, LocalPortfolio localPortfolio, ZeroRateModel zeroRateModel, ForwardAndDiscountSensitivities sensitivities, Simulation simulation, Integer pathOrState, boolean movingScenarioWindow) throws CalculationException {
 		ScenarioFactory scenarios = new ScenarioFactory(zeroRateModel, simulation);	
 		// Need sensitivity curve to call scenarios
-		StochasticCurve deltaCurve = sensitivities.getDeltaSensitivities(evaluationDate);
-		CurveScenarios curveScenarios = new CurveScenarios();
-		for (Map.Entry<Double, RandomVariable> sensitivity : deltaCurve.getCurve().entrySet()) {
-			LocalDateTime scenarioDate = evaluationDate;
-			if(!movingScenarioWindow) {
-				scenarioDate = zeroRateModel.getReferenceDate();
+		SensitivityMatrix gammaMatrix = sensitivities.getDeltaSensitivities(evaluationDate);
+		CurveScenarios curveScenarios = new CurveScenarios();		
+		// store one key for date array retrieval
+		double keyFixing = 0.0;
+		// Loop through all rows of the matrix
+		for (Map.Entry<Double, TreeMap<Double, RandomVariable>> row : gammaMatrix.getSensitivityMatrix().entrySet()) {
+			// if scenarios for row fixing is already contained in curveScenarios return it else created it
+			if (!curveScenarios.containsSeries(row.getKey())) {
+				// Add the tenorPointScenario to the TenorGridSeries for later curve construction
+				curveScenarios.addSeries(row.getKey(), scenarios.getTenorPointScenarios(evaluationDate, row.getKey()));
+			}	
+			for (Map.Entry<Double, RandomVariable> column : row.getValue().entrySet()) {
+				// if scenarios for column fixing is already contained in curveScenarios return it else created it
+				if (!curveScenarios.containsSeries(column.getKey())) {
+					curveScenarios.addSeries(column.getKey(), scenarios.getTenorPointScenarios(evaluationDate, column.getKey()));
+				} 
 			}
-			RandomVariableSeries tenorPointScenario = scenarios.getTenorPointScenarios(scenarioDate, sensitivity.getKey());
-			// Add the tenorPointScenario to the TenorGridSeries for later curve construction
-			curveScenarios.addSeries(sensitivity.getKey(), tenorPointScenario);
+			keyFixing = row.getKey();
 		}
 		// value swaps under all scenario dates
-		List<LocalDateTime> dates = new ArrayList<>(curveScenarios.getCurveScenarios().get(deltaCurve.getSmallestFixing()).getSeries().keySet());
+		List<LocalDateTime> dates = new ArrayList<>(curveScenarios.getSeries(keyFixing).getSeries().keySet());
 		List<RandomVariable> losses = new ArrayList<RandomVariable>(Collections.nCopies(dates.size(), new Scalar(0.0)));
 
 		for (LchSwapLeg swapLeg : localPortfolio.getSwaps()) {
@@ -392,7 +434,7 @@ public class MarginValuationAdjustment {
 			if (modelTime >= localPortfolio.getLastPaymentDate()) {
 				return losses;
 			}
-			for (int index = 0; index < curveScenarios.getCurveScenarios().get(deltaCurve.getSmallestFixing()).getSeries().size(); index++) {
+			for (int index = 0; index < dates.size(); index++) {
 				// get shifted value for elements of worstDates on all paths
 				RandomVariable shiftedNetPresentValue = swapLeg.getValue(evaluationDate, zeroRateModel, curveScenarios.getCurveShifts(dates.get(index)), pathOrState); 
 				// directly update / sum up the losses of all swap legs: NPV_s - NPV 

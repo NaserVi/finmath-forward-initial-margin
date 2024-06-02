@@ -1,19 +1,15 @@
 package net.finmath.lch.initialmargin.swapclear.sensitivities;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import net.finmath.lch.initialmargin.simulation.modeldata.StochasticCurve;
 import net.finmath.lch.initialmargin.simulation.modeldata.TenorGrid;
 import net.finmath.exception.CalculationException;
 import net.finmath.stochastic.RandomVariable;
-import net.finmath.stochastic.Scalar;
 
 
 /**
- * Implementation of {@link lch.initialmargin.swapclear.sensitivities.Sensitivities}
+ * Implementation of {@link net.finmath.lch.initialmargin.swapclear.sensitivities.Sensitivities}
  * Calculates sensitivitiy curves for swap legs
  */
 public abstract class AbstractSensitvities implements Sensitivities {
@@ -32,41 +28,41 @@ public abstract class AbstractSensitvities implements Sensitivities {
 
 
 	@Override
-	public StochasticCurve getDeltaSensitivities(LocalDateTime evaluationDate) throws CalculationException {
+	public SensitivityMatrix getDeltaSensitivities(LocalDateTime evaluationDate) throws CalculationException {
 		return calculateSensitivityCurve(evaluationDate, Derivative.DELTA);
 	}
 
 	
 	@Override
-	public StochasticCurve getGammaSensitivities(LocalDateTime evaluationDate) throws CalculationException {
+	public SensitivityMatrix getGammaSensitivities(LocalDateTime evaluationDate) throws CalculationException {
 		return calculateSensitivityCurve(evaluationDate, Derivative.GAMMA);
 	}
 	
 	
 	// Here the sensitivity calculation is assigned to the type and the actual culculation is happening in the implementations, 
-	protected StochasticCurve calculateSensitivityCurve(LocalDateTime evaluationDate, Derivative derivative) throws CalculationException {
-	    StochasticCurve sensitivityCurve = new StochasticCurve();
+	protected SensitivityMatrix calculateSensitivityCurve(LocalDateTime evaluationDate, Derivative derivative) throws CalculationException {
+		SensitivityMatrix sensitivityMatrix = new SensitivityMatrix();
 	    List<SensitivityComponent> components = sensitivityComponentsForSwapLeg.getSensitivityComponents(evaluationDate);
 	    for (SensitivityComponent component : components) {
 	    	switch (derivative) {
 			case DELTA:
-				calculateDeltaSensitivity(sensitivityCurve, component);
+				calculateDeltaSensitivity(sensitivityMatrix, component);
 				break;
 			case GAMMA:
-				calculateGammaSensitivity(sensitivityCurve, component);;
+				calculateGammaSensitivity(sensitivityMatrix, component);;
 				break;
 			default:
 				throw new IllegalArgumentException("Derivative type not supported.");
 			} 
 	    }
-	    return sensitivityCurve;
+	    return sensitivityMatrix;
 	}
 
 
-	protected abstract void calculateDeltaSensitivity(StochasticCurve sensitivityCurve, SensitivityComponent component);
+	protected abstract void calculateDeltaSensitivity(SensitivityMatrix sensitivityMatrix, SensitivityComponent component);
 
 	
-	protected abstract void calculateGammaSensitivity(StochasticCurve sensitivityCurve, SensitivityComponent component);
+	protected abstract void calculateGammaSensitivity(SensitivityMatrix sensitivityMatrix, SensitivityComponent component);
 
 
 	// Returns the zero rate independent swap components as a factor
@@ -78,47 +74,43 @@ public abstract class AbstractSensitvities implements Sensitivities {
 		return coefficient;
 	}
 	
+	
+	// Map sensitivities to the provided tenor grid
+	protected void mapSensitivityToMatrix(SensitivityMatrix sensitivityMatrix, RandomVariable sensitivity, double maturityFirstOrder, double maturitySecondOrder) {	
+		// Possible fixing points
+		// If maturity is smaller or greater than smallest or greatest fixing then lower = upper 
+		double lowerFixingFirstOrder = tenorGrid.getNearestSmallerFixing(maturityFirstOrder);
+		double upperFixingFirstOrder = tenorGrid.getNearestGreaterFixing(maturityFirstOrder);
+		double lowerFixingSecondOrder = tenorGrid.getNearestSmallerFixing(maturitySecondOrder);
+		double upperFixingSecondOrder = tenorGrid.getNearestGreaterFixing(maturitySecondOrder);
 
-	// Mapps the sensitvities to the provided tenor grid
-	protected void mapSensitivityToCurve(StochasticCurve sensitivityCurve, RandomVariable sensitivity, double timeToMaturity) {
-		ArrayList<Double> tenorFixings = tenorGrid.getFixings(); 
+		double distanceFirstOrder = upperFixingFirstOrder - lowerFixingFirstOrder;
+		double distanceSecondOrder = upperFixingSecondOrder - lowerFixingSecondOrder;
 		
-		int tenorIndex = Collections.binarySearch(tenorFixings, timeToMaturity);
-		if (tenorIndex < 0) { // No exact match on grid
-			int upperTenorIndex 	= -tenorIndex - 1;
-			if (upperTenorIndex >= tenorFixings.size()) {
-				// Assign whole sensitivity to last pillar point if timeToMaturity > last fixing
-				double upperTenorFixing = tenorFixings.get(tenorFixings.size() - 1);
-				addSensitivity(sensitivityCurve, upperTenorFixing, sensitivity);
-				return;
-			}
-			double upperTenorFixing = tenorFixings.get(upperTenorIndex);
-			if (upperTenorIndex == 0) {
-				// Assign whole sensitivity to first pillar point if timeToMaturity < first fixing
-				addSensitivity(sensitivityCurve, upperTenorFixing, sensitivity);
-				return;
-			}
-			// Linearly assign sensitivity to surrounding pillar points
-			int lowerTenorIndex 	= upperTenorIndex - 1;
-			double lowerTenorFixing = tenorFixings.get(lowerTenorIndex);
-				
-			double upperWeighting 	= (double) (timeToMaturity - lowerTenorFixing)/(upperTenorFixing - lowerTenorFixing);
-			double lowerWeighting 	= 1 - upperWeighting;	
-			addSensitivity(sensitivityCurve, upperTenorFixing, sensitivity.mult(upperWeighting));
-			addSensitivity(sensitivityCurve, lowerTenorFixing, sensitivity.mult(lowerWeighting));
-			
+		// if lower and upper fixings are the same then the distance is zero
+		// both distances are zero -> allocate complete sensitivity to one point
+		if (distanceFirstOrder == 0 && distanceSecondOrder == 0) {
+			sensitivityMatrix.addValue(lowerFixingFirstOrder, lowerFixingSecondOrder, sensitivity);
+		// if first order distance is zero -> allocate only between second order points
+		} else if (distanceFirstOrder == 0) {
+			double weight = (maturitySecondOrder - lowerFixingSecondOrder) / distanceSecondOrder;
+			sensitivityMatrix.addValue(lowerFixingFirstOrder, lowerFixingSecondOrder, sensitivity.mult(1 - weight));
+			sensitivityMatrix.addValue(lowerFixingFirstOrder, upperFixingSecondOrder, sensitivity.mult(weight));
+		// if second order distance is zero -> allocate only between first order points
+		} else if (distanceSecondOrder == 0) {
+			double weight = (maturityFirstOrder - lowerFixingFirstOrder) / distanceFirstOrder;
+			sensitivityMatrix.addValue(lowerFixingFirstOrder, lowerFixingSecondOrder, sensitivity.mult(1 - weight));
+			sensitivityMatrix.addValue(upperFixingFirstOrder, lowerFixingSecondOrder, sensitivity.mult(weight));
+		// else allocate sensitivity to the nearest four points of the tenor grid
 		} else {
-			// Exact match on tenor grid
-			double tenorFixing = tenorFixings.get(tenorIndex);
-			addSensitivity(sensitivityCurve, tenorFixing, sensitivity);
+			double weightFirstOrder = (maturityFirstOrder - lowerFixingFirstOrder) / distanceFirstOrder;
+			double weightSecondOrder = (maturitySecondOrder - lowerFixingSecondOrder) / distanceSecondOrder;
+			// Allocate sensitivities
+			sensitivityMatrix.addValue(lowerFixingFirstOrder, lowerFixingSecondOrder, sensitivity.mult((1 - weightFirstOrder)  * (1 - weightSecondOrder)));
+			sensitivityMatrix.addValue(lowerFixingFirstOrder, upperFixingSecondOrder, sensitivity.mult((1 - weightFirstOrder) * weightSecondOrder));
+			sensitivityMatrix.addValue(upperFixingFirstOrder, lowerFixingSecondOrder, sensitivity.mult(weightFirstOrder * (1 - weightSecondOrder)));
+			sensitivityMatrix.addValue(upperFixingFirstOrder, upperFixingSecondOrder, sensitivity.mult(weightFirstOrder * weightSecondOrder));
 		}
 	}
-
-	
-	private void addSensitivity(StochasticCurve sensitivityCurve, double fixing, RandomVariable sensitivity) {
-		RandomVariable currentSensitivity = sensitivityCurve.getCurve().getOrDefault(fixing, new Scalar(0.0));
-		sensitivityCurve.addRate(fixing, currentSensitivity.add(sensitivity));
-	}
-	
 	
 }

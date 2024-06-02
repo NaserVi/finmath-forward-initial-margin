@@ -1,7 +1,6 @@
 package net.finmath.lch.initialmargin.swapclear.sensitivities;
 
 
-import net.finmath.lch.initialmargin.simulation.modeldata.StochasticCurve;
 import net.finmath.lch.initialmargin.simulation.modeldata.TenorGrid;
 import net.finmath.lch.initialmargin.swapclear.sensitivities.DiscountFactor.DiscountDate;
 import net.finmath.stochastic.RandomVariable;
@@ -19,18 +18,18 @@ public class ForwardSensitivities extends AbstractSensitvities {
 	
 
 	@Override
-	protected void calculateDeltaSensitivity(StochasticCurve sensitivityCurve, SensitivityComponent component) {
-		calculateSensitivity(sensitivityCurve, component, 1);
+	protected void calculateDeltaSensitivity(SensitivityMatrix sensitivityMatrix, SensitivityComponent component) {
+		calculateSensitivity(sensitivityMatrix, component, 1);
 	}
 
 
 	@Override
-	protected void calculateGammaSensitivity(StochasticCurve sensitivityCurve, SensitivityComponent component) {
-		calculateSensitivity(sensitivityCurve, component, 2);
+	protected void calculateGammaSensitivity(SensitivityMatrix sensitivityMatrix, SensitivityComponent component) {
+		calculateSensitivity(sensitivityMatrix, component, 2);
 	}
 	
 	
-	private void calculateSensitivity(StochasticCurve sensitivityCurve, SensitivityComponent component, int derivativeOrder) {
+	private void calculateSensitivity(SensitivityMatrix sensitivityMatrix, SensitivityComponent component, int derivativeOrder) {
 		// if the LIBOR is already fixed no sensitivity -> no discount factors for period start and end date
     	if (component.getDiscountFactor(DiscountDate.PERIOD_START) == null) {
     		return;
@@ -42,14 +41,19 @@ public class ForwardSensitivities extends AbstractSensitvities {
 		// get constant factors plus the discount factor for the payment date of the period
     	RandomVariable coefficient = getConstantCoefficient(component.getNotional(), component.getDayCountFraction(), component.isPayer());
     	coefficient = coefficient.mult(discountFactorPayment.getDiscountFactor());
-    	// need to calculate two sensitivities, one for the period start bond and one for the period end bond
     	// we need the additional day count fraction between the period start and period end
     	double dayCountFraction = discountFactorPeriodEnd.getTimeToMaturity() - discountFactorPeriodStart.getTimeToMaturity();
-    	RandomVariable sensitivityPeriodStart = discountFactorPeriodStart.getDerivative(derivativeOrder).mult(Math.pow(ZERO_RATE_SHIFT, derivativeOrder)).div(discountFactorPeriodEnd.getDiscountFactor()).div(dayCountFraction).mult(coefficient);
-    	RandomVariable sensitivityPeriodEnd = discountFactorPeriodStart.getDiscountFactor().mult(discountFactorPeriodEnd.getInverseDerivative(derivativeOrder).mult(Math.pow(ZERO_RATE_SHIFT, derivativeOrder))).div(dayCountFraction).mult(coefficient);
-
-		mapSensitivityToCurve(sensitivityCurve, sensitivityPeriodStart, discountFactorPeriodStart.getTimeToMaturity());
-		mapSensitivityToCurve(sensitivityCurve, sensitivityPeriodEnd, discountFactorPeriodEnd.getTimeToMaturity());
+    	// independent of derivative order one sensitivity for the period start bond and one for the period end bond
+        RandomVariable sensitivityPeriodStart = discountFactorPeriodStart.getDerivative(derivativeOrder).mult(Math.pow(ZERO_RATE_SHIFT, derivativeOrder)).div(discountFactorPeriodEnd.getDiscountFactor()).div(dayCountFraction).mult(coefficient);
+        RandomVariable sensitivityPeriodEnd = discountFactorPeriodStart.getDiscountFactor().mult(discountFactorPeriodEnd.getInverseDerivative(derivativeOrder).mult(Math.pow(ZERO_RATE_SHIFT, derivativeOrder))).div(dayCountFraction).mult(coefficient);
+		mapSensitivityToMatrix(sensitivityMatrix, sensitivityPeriodStart, discountFactorPeriodStart.getTimeToMaturity(), discountFactorPeriodStart.getTimeToMaturity());
+		mapSensitivityToMatrix(sensitivityMatrix, sensitivityPeriodEnd, discountFactorPeriodEnd.getTimeToMaturity(), discountFactorPeriodEnd.getTimeToMaturity());
+		// one additional sensitivity for the cross-gamma case
+		if (derivativeOrder == 2) {
+			RandomVariable crossGammaSensitivity = discountFactorPeriodStart.getDerivative(1).mult(discountFactorPeriodEnd.getInverseDerivative(1)).mult(Math.pow(ZERO_RATE_SHIFT, 2)).div(dayCountFraction).mult(coefficient);
+			// We construct an upper triangle matrix since the derivative order doesn't matter and thus gamma matrix is symmetric -> add sensitivity twice to one maturity combination
+			mapSensitivityToMatrix(sensitivityMatrix, crossGammaSensitivity.mult(2), discountFactorPeriodStart.getTimeToMaturity(), discountFactorPeriodEnd.getTimeToMaturity());
+		}
 	}
 	
    

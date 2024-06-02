@@ -39,6 +39,24 @@ public class CurveScenarios {
 		curveScenarios.put(fixing, randomVariableSeries);
 	}
 	
+	
+	/**
+	 * @param fixing The fixing of the randomVariableSeries
+	 * @return The series if it is contained in the CurveScenarios
+	 */
+	public RandomVariableSeries getSeries(Double fixing) {
+		return curveScenarios.get(fixing);
+	}
+	
+	
+	/**
+	 * @param fixing The fixing of the randomVariableSeries
+	 * @return True if the series is available
+	 */
+	public boolean containsSeries(Double fixing) {
+		return curveScenarios.containsKey(fixing);
+	}
+	
 
 	/**
 	 * Builds a StochasticCurve for the available fixing points consisting of the shifts.

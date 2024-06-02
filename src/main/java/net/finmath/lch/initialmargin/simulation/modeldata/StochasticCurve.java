@@ -75,7 +75,7 @@ public class StochasticCurve {
 	 * 
 	 * @return The lowest fixing point in the current curve sampling set
 	 */
-	public double getSmallestFixing() {
+	public double getFixingSmallest() {
 		return curve.firstKey();
 	}
 	
@@ -84,7 +84,7 @@ public class StochasticCurve {
 	 * 
 	 * @return The greatest fixing point in the current curve sampling set
 	 */
-	public double getGreatestFixing() {
+	public double getFixingGreatest() {
 		return curve.lastKey();
 	}
 	

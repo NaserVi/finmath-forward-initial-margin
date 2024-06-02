@@ -34,11 +34,11 @@ public class InitialMarginPlots {
 
 		LchSwap swap = PortfolioFactory.create5YPayerSwap();
 	    LocalPortfolio swapPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);		
-	    double stepSize = 0.05;
+	    double stepSize = 0.125;
 	    
 		
-//		plotIMPaths(InitialMargin.BASE, false, false, zeroRateModel, swapPortfolio, stepSize);
 		plotIMPaths(InitialMargin.BASE, false, true, zeroRateModel, swapPortfolio, stepSize);
+//		plotIMPaths(InitialMargin.BASE, true, false, zeroRateModel, swapPortfolio, stepSize);
 //		plotIMPaths(InitialMargin.BASE, false, true, zeroRateModel, swapPortfolio, stepSize);
 //		plotIMPaths(InitialMargin.BASE, true, true, zeroRateModel, swapPortfolio, stepSize);
 

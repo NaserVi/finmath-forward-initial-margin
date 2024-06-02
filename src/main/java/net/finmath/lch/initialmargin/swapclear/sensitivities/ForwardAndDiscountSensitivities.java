@@ -1,7 +1,6 @@
 package net.finmath.lch.initialmargin.swapclear.sensitivities;
 
 
-import net.finmath.lch.initialmargin.simulation.modeldata.StochasticCurve;
 import net.finmath.lch.initialmargin.simulation.modeldata.TenorGrid;
 
 
@@ -22,16 +21,16 @@ public class ForwardAndDiscountSensitivities extends AbstractSensitvities {
 
     
     @Override
-    protected void calculateDeltaSensitivity(StochasticCurve sensitivityCurve, SensitivityComponent component) {
-        forwardSensitivities.calculateDeltaSensitivity(sensitivityCurve, component);
-        discountSensitivities.calculateDeltaSensitivity(sensitivityCurve, component);
+    protected void calculateDeltaSensitivity(SensitivityMatrix sensitivityMatrix, SensitivityComponent component) {
+        forwardSensitivities.calculateDeltaSensitivity(sensitivityMatrix, component);
+        discountSensitivities.calculateDeltaSensitivity(sensitivityMatrix, component);
     }
 
     
     @Override
-    protected void calculateGammaSensitivity(StochasticCurve sensitivityCurve, SensitivityComponent component) {
-        forwardSensitivities.calculateGammaSensitivity(sensitivityCurve, component);
-        discountSensitivities.calculateGammaSensitivity(sensitivityCurve, component);
+    protected void calculateGammaSensitivity(SensitivityMatrix sensitivityMatrix, SensitivityComponent component) {
+        forwardSensitivities.calculateGammaSensitivity(sensitivityMatrix, component);
+        discountSensitivities.calculateGammaSensitivity(sensitivityMatrix, component);
     }
     
 }
