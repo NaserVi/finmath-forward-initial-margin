@@ -21,6 +21,8 @@ import net.finmath.montecarlo.interestrate.TermStructureMonteCarloSimulationMode
 import net.finmath.montecarlo.interestrate.products.AbstractTermStructureMonteCarloProduct;
 import net.finmath.montecarlo.interestrate.products.components.AbstractProductComponent;
 import net.finmath.stochastic.RandomVariable;
+import net.finmath.stochastic.Scalar;
+import net.finmath.time.FloatingpointDate;
 import net.finmath.time.Schedule;
 
 /**
@@ -41,6 +43,7 @@ public class LchSwapLeg extends AbstractTermStructureMonteCarloProduct {
 	 * @param index The index.
 	 * @param spread Fixed spread on the forward or fix rate.
 	 * @param couponFlow If true, the coupon is payed. If false, the coupon is not payed, but may still be part of an accruing notional, see <code>isNotionalAccruing</code>.
+	 * @param isPayLeg If true, the leg pays the rate.
 	 * @param isNotionalExchanged If true, the leg will pay notional at the beginning of the swap and receive notional at the end of the swap.
 	 * @param isNotionalAccruing If true, the notional is accruing, that is, the notional of a period is given by the notional of the previous period, accrued with the coupon of the previous period.
 	 */
@@ -208,5 +211,11 @@ public class LchSwapLeg extends AbstractTermStructureMonteCarloProduct {
 	public double getLastPaymentDate() {
 		return legSchedule.getPayment(legSchedule.getNumberOfPeriods() - 1);
 	}
+	
+	// Leg schedule of the swap
+	public Schedule getSchedule() {
+		return legSchedule;
+	}
+	
 	
 }

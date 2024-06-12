@@ -60,7 +60,7 @@ public class PairsInitialMargin {
 		getSensitivities(evaluationDate, zeroRateModel, localPortfolio, dataContainer);
 		// 3. Calculate PnL with Taylor Expansion and store curve shifts and PnLs in dataContainer
 		Simulation simulation = Simulation.EXPECTED_SHORTFALL_6;
-		getPnLAndCurveScenarios(evaluationDate, zeroRateModel, localPortfolio, dataContainer, simulation, movingScenarioWindow);
+		getPnLAndCurveScenarios(evaluationDate, zeroRateModel, dataContainer, simulation, movingScenarioWindow);
 		// 4. Full revalue of the swaps under the 20 worst scenarios, either path-wise or by approximation (average over all paths)
 		if (pathWiseEvaluation) {
 			double[] initialMarginRealizations = new double[zeroRateModel.getNumberOfPaths()];
@@ -100,7 +100,7 @@ public class PairsInitialMargin {
 		getSensitivities(evaluationDate, zeroRateModel, localPortfolio, dataContainer);
 		// 3. Calculate PnL with Taylor Expansion and store curve shifts and PnLs in dataContainer
 		Simulation simulation = Simulation.VALUE_AT_RISK;
-		getPnLAndCurveScenarios(evaluationDate, zeroRateModel, localPortfolio, dataContainer, simulation, movingScenarioWindow);
+		getPnLAndCurveScenarios(evaluationDate, zeroRateModel, dataContainer, simulation, movingScenarioWindow);
 		// 4. Full revalue of the swaps under the 20 worst scenarios, either path-wise or by approximation (average over all paths)
 		if (pathWiseEvaluation) {
 			double[] initialMarginRealizations = new double[zeroRateModel.getNumberOfPaths()];
@@ -139,8 +139,8 @@ public class PairsInitialMargin {
 		// Split evaluation into Base and Floor Initial Margin due to different scenario transformations
 		Simulation simulationBase = Simulation.EXPECTED_SHORTFALL_6;
 		Simulation simulationFloor = Simulation.VALUE_AT_RISK;
-		getPnLAndCurveScenarios(evaluationDate, zeroRateModel, localPortfolio, dataContainer, simulationBase, movingScenarioWindow);
-		getPnLAndCurveScenarios(evaluationDate, zeroRateModel, localPortfolio, dataContainer, simulationFloor, movingScenarioWindow);
+		getPnLAndCurveScenarios(evaluationDate, zeroRateModel, dataContainer, simulationBase, movingScenarioWindow);
+		getPnLAndCurveScenarios(evaluationDate, zeroRateModel, dataContainer, simulationFloor, movingScenarioWindow);
 		// 4. Full revalue of the swaps under the 20 worst scenarios, either path-wise or by approximation (average over all paths)
 		if (pathWiseEvaluation) {
 			// Pairs IM is the maximum of Base and Floor IM
@@ -188,7 +188,7 @@ public class PairsInitialMargin {
 	 * Currently: If sensitivities rely on the same curve, the discount factors are handled as constants when calculating forward sensitivities and vice versa.
 	 */ 
 	// Calculates the PNL of the swap portfolio (Taylor) and stores them in the IM data container together with the curve scenarios
-	private static void getPnLAndCurveScenarios(LocalDateTime evaluationDate, ZeroRateModel zeroRateModel, LocalPortfolio localPortfolio, InitialMarginContainer initialMarginContainer, Simulation simulation, boolean movingScenarioWindow) throws CalculationException {	
+	private static void getPnLAndCurveScenarios(LocalDateTime evaluationDate, ZeroRateModel zeroRateModel, InitialMarginContainer initialMarginContainer, Simulation simulation, boolean movingScenarioWindow) throws CalculationException {	
 		// if movingScenarioWindow == false we restrict the scenario window to historical scenarios only -> the scenarios are not moving with the model
 		if(!movingScenarioWindow) {
 			evaluationDate = zeroRateModel.getReferenceDate();

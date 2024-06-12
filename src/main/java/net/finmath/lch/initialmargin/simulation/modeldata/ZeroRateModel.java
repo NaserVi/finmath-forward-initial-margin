@@ -102,7 +102,8 @@ public class ZeroRateModel {
 	/**
 	 * Returns the historical or model generated forward rate for the given evaluationDate.
 	 * @param evaluationDate Date for which the rate should be returned
-	 * @param periodLength Maturity of the zero rate
+	 * @param periodStart Start date of the period
+	 * @param periodEnd End date of the period
 	 * @param curveshifts If provided, adds a shift to both rates used for calculating the discount factors
 	 * @param pathOrState The path or state of the rate if only one simulation path should be considered
 	 * @return The forward rate calculated from the rates of the model

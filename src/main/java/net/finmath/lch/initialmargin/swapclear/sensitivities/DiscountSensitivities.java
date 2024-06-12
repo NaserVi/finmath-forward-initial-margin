@@ -34,11 +34,8 @@ public class DiscountSensitivities extends AbstractSensitvities {
 	private void calculateSensitivity(SensitivityMatrix sensitivityMatrix, SensitivityComponent component, int derivativeOrder) {
     	// Filter discount factors for selected discounting method and payment date
 		DiscountFactor discountFactor = component.getDiscountFactor(DiscountDate.PAYMENT);
-		// get constant factors plus the time dependent rate of the period
-    	RandomVariable coefficient = getConstantCoefficient(component.getNotional(), component.getDayCountFraction(), component.isPayer());
-    	coefficient = coefficient.mult(component.getRate());
-    	// multiply with derivative of the discount factor based on derivative order
-		RandomVariable sensitivity = coefficient.mult(discountFactor.getDerivative(derivativeOrder).mult(Math.pow(ZERO_RATE_SHIFT, derivativeOrder)));
+		// Discount sensitivity is just N * P(T;t) since rest cancels out with forward rate definition
+		RandomVariable sensitivity = component.getNotional().mult(Math.pow(-1, derivativeOrder + 1)).mult(discountFactor.getDerivative(derivativeOrder).mult(Math.pow(ZERO_RATE_SHIFT, derivativeOrder)));
 		// discount sensitivities do not have cross-gamma effects -> all mapped to the diagonal entries
 		mapSensitivityToMatrix(sensitivityMatrix, sensitivity, discountFactor.getTimeToMaturity(), discountFactor.getTimeToMaturity());
 	}

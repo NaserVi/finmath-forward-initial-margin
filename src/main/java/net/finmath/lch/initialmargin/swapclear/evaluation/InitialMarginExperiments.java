@@ -73,42 +73,17 @@ public class InitialMarginExperiments {
 
 	
 	public static void main (String[] args) throws CalculationException {
+				
+		boolean movingWindow = true;
+		boolean pathWiseScenarios = false;
 		
-//		getSwapValuePaths("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Value_Comparison.xlsx", "Value under ZRM", true);
-//		getSwapValuePaths("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Value_Comparison.xlsx", "Value under LMM", false);
-//		
-//		getSensitivitiesAggregated("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Aggregated_Sensitivities.xlsx", "Discount Delta", SensitivityType.DISCOUNT, SensitivityOrder.DELTA);
-//		getSensitivitiesAggregated("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Aggregated_Sensitivities.xlsx", "Discount Gamma", SensitivityType.DISCOUNT, SensitivityOrder.GAMMA);
-//		getSensitivitiesAggregated("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Aggregated_Sensitivities.xlsx", "Forward Delta", SensitivityType.FORWARD, SensitivityOrder.DELTA);
-//		getSensitivitiesAggregated("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Aggregated_Sensitivities.xlsx", "Forward Gamma", SensitivityType.FORWARD, SensitivityOrder.GAMMA);
-//
-//		getSensitivitiesBucketWise("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Discount_Delta_Buckets.xlsx", "Sensitivity Buckets", SensitivityType.DISCOUNT, SensitivityOrder.DELTA);
-//		getSensitivitiesBucketWise("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Discount_Gamma_Buckets.xlsx", "Sensitivity Buckets", SensitivityType.DISCOUNT, SensitivityOrder.GAMMA);
-//		getSensitivitiesBucketWise("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Forward_Delta_Buckets.xlsx", "Sensitivity Buckets", SensitivityType.FORWARD, SensitivityOrder.DELTA);
-//		getSensitivitiesBucketWise("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Forward_Gamma_Buckets.xlsx", "Sensitivity Buckets", SensitivityType.FORWARD, SensitivityOrder.GAMMA);
-//
+		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yReceiverSwap/IM 15yReceiverSwap - Base Moving Average.xlsx", "Paths", InitialMargin.PAIRS, pathWiseScenarios, movingWindow);
+				
+		
+//		getPnLFromTaylor("D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yReceiverSwap/PnL 15yReceiverSwap Full vs Taylor.xlsx", "Taylor");
+//		getPnLFromFullRevaluation("D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yReceiverSwap/PnL 15yReceiverSwap Full vs Taylor.xlsx", "Full");
+		
 
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/Results/5y_Swap_Floor_Initial_Margin.xlsx", "Average+Fixed", InitialMargin.FLOOR, false, false);
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/Results/5y_Swap_Floor_Initial_Margin.xlsx", "Average+Moving", InitialMargin.FLOOR, false, true);
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/Results/5y_Swap_Floor_Initial_Margin.xlsx", "Pathwise+Fixed", InitialMargin.FLOOR, true, false);
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/Results/5y_Swap_Floor_Initial_Margin.xlsx", "Pathwise+Moving", InitialMargin.FLOOR, true, true);
-//
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/Results/5y_Swap_Base_Initial_Margin.xlsx", "Average+Fixed", InitialMargin.BASE, false, false);
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/Results/5y_Swap_Base_Initial_Margin.xlsx", "Average+Moving", InitialMargin.BASE, false, true);
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/Results/5y_Swap_Base_Initial_Margin.xlsx", "Pathwise+Fixed", InitialMargin.BASE, true, false);
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/Results/5y_Swap_Base_Initial_Margin.xlsx", "Pathwise+Moving", InitialMargin.BASE, true, true);
-//
-//		
-//		getWorstScenarioDates("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Worst_Scenario_Dates_Base.xlsx", "Base IM Pathwise", Simulation.EXPECTED_SHORTFALL_6, true, true);
-//		getWorstScenarioDates("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Worst_Scenario_Dates_Base.xlsx", "Base IM Approximation", Simulation.EXPECTED_SHORTFALL_6, false, true);
-//		getWorstScenarioDates("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Worst_Scenario_Dates_Floor.xlsx", "Floor IM Pathwise", Simulation.VALUE_AT_RISK, true, true);
-//		getWorstScenarioDates("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Worst_Scenario_Dates_Floor.xlsx", "Floor IM Approximation", Simulation.VALUE_AT_RISK, false, true);
-//
-//		getIMWithFullRevaluation("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Initial_Margin_Full_Revalue.xlsx", "Base IM Pathwise", Simulation.EXPECTED_SHORTFALL_6, true);
-//		getIMWithFullRevaluation("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Initial_Margin_Full_Revalue.xlsx", "Base IM Approximation", Simulation.EXPECTED_SHORTFALL_6, false);
-//		getIMWithFullRevaluation("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Initial_Margin_Full_Revalue.xlsx", "Floor IM Pathwise", Simulation.VALUE_AT_RISK, true);
-//		getIMWithFullRevaluation("D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/5y_Swap_Initial_Margin_Full_Revalue.xlsx", "Floor IM Approximation", Simulation.VALUE_AT_RISK, false);
-//		
 	}
 	
 	
@@ -116,11 +91,12 @@ public class InitialMarginExperiments {
 	
 	public static void getInitialMarginPaths(String filePath, String sheetName, InitialMargin type, boolean pathWiseEvaluation, boolean movingScenarioWindow) throws CalculationException {
 		final LIBORModelMonteCarloSimulationModel liborModel = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
-		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, liborModel, "D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/EUR_EURIBOR_3M_Input_Data.xlsx");
+		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, liborModel, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
 		
-	    LchSwap swap = PortfolioFactory.create5YPayerSwap();
-	    LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);		
-	    
+		LchSwap swap2 = PortfolioFactory.create15YReceiverSwap();
+
+		LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap2).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);		
+		
 	    ArrayList<LocalDateTime> dates = getDates(localPortfolio.getLastPaymentDate(), SchemeStorage.getLocalCalendar(Currency.EUR));
 	    
 		try {
@@ -184,7 +160,7 @@ public class InitialMarginExperiments {
 	
 	public static void getSwapValuePaths(String filePath, String sheetName, boolean valueUnderZeroModel) throws CalculationException {
 		final LIBORModelMonteCarloSimulationModel model = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
-		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, model, "D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/EUR_EURIBOR_3M_Input_Data.xlsx");
+		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, model, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
 
 	    LchSwap swap = PortfolioFactory.create5YPayerSwap();
 	    ArrayList<LocalDateTime> dates = getDates(swap.getLastPaymentDate(), SchemeStorage.getLocalCalendar(Currency.EUR));
@@ -238,7 +214,7 @@ public class InitialMarginExperiments {
 	
 	public static void getSensitivitiesAggregated(String filePath, String sheetName, SensitivityType type, SensitivityOrder order) throws CalculationException {
 		final LIBORModelMonteCarloSimulationModel model = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
-		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, model, "D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/EUR_EURIBOR_3M_Input_Data.xlsx");
+		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, model, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
 
 	    LchSwap swap = PortfolioFactory.create5YPayerSwap();
 	    LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR);
@@ -305,7 +281,7 @@ public class InitialMarginExperiments {
 	
 	public static void getSensitivitiesBucketWise(String filePath, String sheetName, SensitivityType type, SensitivityOrder order) throws CalculationException {
 		final LIBORModelMonteCarloSimulationModel model = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
-		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, model, "D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/EUR_EURIBOR_3M_Input_Data.xlsx");
+		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, model, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
 
 	    LchSwap swap = PortfolioFactory.create5YPayerSwap();
 	    LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR);
@@ -373,9 +349,145 @@ public class InitialMarginExperiments {
 	}
 	
 	
+	public static void getPnLFromTaylor(String filePath, String sheetName) throws CalculationException {
+		final LIBORModelMonteCarloSimulationModel liborModel = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
+		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, liborModel, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
+		
+	    LchSwap swap = PortfolioFactory.create5YPayerSwap();
+	    LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);		
+		SensitivityComponentsForSwapLeg sensitivityComponents = new SensitivityComponentsForSwapLeg(localPortfolio.getSwaps(), zeroRateModel, zeroRateModel);	    
+		ForwardAndDiscountSensitivities sensitivities = new ForwardAndDiscountSensitivities(sensitivityComponents, TenorGridFactory.getTenorGrid(GridType.INITIAL_MARGIN_RISK_GRID));
+		HashMap<LocalDateTime, RandomVariable> pnL = getPnL(REFERENCE_DATE, zeroRateModel, sensitivities, Simulation.VALUE_AT_RISK, false).getSeries();
+	    
+		try {
+            // Check if file exists
+            if (!Files.exists(Paths.get(filePath))) {
+                System.out.println("File does not exist.");
+                return;
+            }
+            FileInputStream fileIn = new FileInputStream(filePath);
+            Workbook workbook = WorkbookFactory.create(fileIn);
+            Sheet sheet = workbook.getSheet(sheetName);
+            if (sheet == null) {
+            	// Create a new sheet if it doesn't exist
+                sheet = workbook.createSheet(sheetName); 
+            }
+            CellStyle dateStyle = workbook.createCellStyle();
+            CreationHelper createHelper = workbook.getCreationHelper();
+            dateStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
+
+            int i = 0;
+            for (Map.Entry<LocalDateTime, RandomVariable> entry : pnL.entrySet()) {
+                Row row = sheet.createRow(i);
+                Cell dateCell = row.createCell(0);
+                dateCell.setCellValue(entry.getKey());
+                dateCell.setCellStyle(dateStyle);
+                double value = entry.getValue().getAverage();
+                row.createCell(1).setCellValue(value);
+                i += 1;
+            }
+            // Close the input stream
+            fileIn.close();
+
+            // Write the changes back to the file
+            FileOutputStream fileOut = new FileOutputStream(filePath);
+            workbook.write(fileOut);
+            fileOut.close();
+            workbook.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }		
+	}
+	
+	private static void getPnLFromFullRevaluation(String filePath, String sheetName) throws CalculationException {
+		final LIBORModelMonteCarloSimulationModel liborModel = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
+		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, liborModel, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
+		
+	    LchSwap swap = PortfolioFactory.create5YPayerSwap();
+	    LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);		
+		SensitivityComponentsForSwapLeg sensitivityComponents = new SensitivityComponentsForSwapLeg(localPortfolio.getSwaps(), zeroRateModel, zeroRateModel);	    
+		ForwardAndDiscountSensitivities sensitivities = new ForwardAndDiscountSensitivities(sensitivityComponents, TenorGridFactory.getTenorGrid(GridType.INITIAL_MARGIN_RISK_GRID));
+	    
+		ScenarioFactory scenarios = new ScenarioFactory(zeroRateModel, Simulation.VALUE_AT_RISK);	
+		// Need sensitivity curve to call scenarios
+		SensitivityMatrix gammaMatrix = sensitivities.getGammaSensitivities(REFERENCE_DATE);
+		CurveScenarios curveScenarios = new CurveScenarios();		
+		// store one key for date array retrieval
+		double keyFixing = 0.0;
+		// Loop through all rows of the matrix
+		for (Map.Entry<Double, TreeMap<Double, RandomVariable>> row : gammaMatrix.getSensitivityMatrix().entrySet()) {
+			// if scenarios for row fixing is already contained in curveScenarios return it else created it
+			if (!curveScenarios.containsSeries(row.getKey())) {
+				// Add the tenorPointScenario to the TenorGridSeries for later curve construction
+				curveScenarios.addSeries(row.getKey(), scenarios.getTenorPointScenarios(REFERENCE_DATE, row.getKey()));
+			}	
+			for (Map.Entry<Double, RandomVariable> column : row.getValue().entrySet()) {
+				// if scenarios for column fixing is already contained in curveScenarios return it else created it
+				if (!curveScenarios.containsSeries(column.getKey())) {
+					curveScenarios.addSeries(column.getKey(), scenarios.getTenorPointScenarios(REFERENCE_DATE, column.getKey()));
+				} 
+			}
+			keyFixing = row.getKey();
+		}
+		// value swaps under all scenario dates
+		List<LocalDateTime> dates = new ArrayList<>(curveScenarios.getSeries(keyFixing).getSeries().keySet());
+		List<RandomVariable> pnL = new ArrayList<RandomVariable>(Collections.nCopies(dates.size(), new Scalar(0.0)));
+
+		for (LchSwapLeg swapLeg : localPortfolio.getSwaps()) {
+			RandomVariable netPresentValue = swapLeg.getValue(REFERENCE_DATE, zeroRateModel, null, null); // no shift
+			for (int index = 0; index < dates.size(); index++) {
+				// get shifted value for elements of worstDates on all paths
+				RandomVariable shiftedNetPresentValue = swapLeg.getValue(REFERENCE_DATE, zeroRateModel, curveScenarios.getCurveShifts(dates.get(index)), null); 
+				// directly update / sum up the losses of all swap legs: NPV_s - NPV 
+				pnL.set(index, pnL.get(index).add(shiftedNetPresentValue.sub(netPresentValue))); 
+			}
+		}
+		
+		try {
+            // Check if file exists
+            if (!Files.exists(Paths.get(filePath))) {
+                System.out.println("File does not exist.");
+                return;
+            }
+            FileInputStream fileIn = new FileInputStream(filePath);
+            Workbook workbook = WorkbookFactory.create(fileIn);
+            Sheet sheet = workbook.getSheet(sheetName);
+            if (sheet == null) {
+            	// Create a new sheet if it doesn't exist
+                sheet = workbook.createSheet(sheetName); 
+            }
+            CellStyle dateStyle = workbook.createCellStyle();
+            CreationHelper createHelper = workbook.getCreationHelper();
+            dateStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
+
+            int i = 0;
+            for (int j = 0; j < dates.size(); j++) {
+                Row row = sheet.createRow(i);
+                Cell dateCell = row.createCell(0);
+                dateCell.setCellValue(dates.get(j));
+                dateCell.setCellStyle(dateStyle);
+                double value = pnL.get(j).getAverage();
+                row.createCell(1).setCellValue(value);
+                i += 1;
+            }
+            // Close the input stream
+            fileIn.close();
+
+            // Write the changes back to the file
+            FileOutputStream fileOut = new FileOutputStream(filePath);
+            workbook.write(fileOut);
+            fileOut.close();
+            workbook.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }	
+		
+	}
+	
+	
 	public static void getWorstScenarioDates(String filePath, String sheetName, Simulation simulation, boolean pathWiseEvaluation, boolean movingScenarioWindow) throws CalculationException {
 		final LIBORModelMonteCarloSimulationModel model = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
-		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, model, "D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/EUR_EURIBOR_3M_Input_Data.xlsx");
+		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, model, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
 
 	    LchSwap swap = PortfolioFactory.create5YPayerSwap();
 	    LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR);
@@ -449,7 +561,7 @@ public class InitialMarginExperiments {
 	// Revalues portfolio under all scenarios to check if PnL actually filters for the 20 worst scenarios
 	public static void getIMWithFullRevaluation(String filePath, String sheetName, Simulation simulation, boolean pathWiseEvaluation) throws CalculationException {
 		final LIBORModelMonteCarloSimulationModel model = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
-		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, model, "D:/Finanzmathematik/Masterthesis/Data/EUR_EURIBOR_3M/EUR_EURIBOR_3M_Input_Data.xlsx");
+		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, model, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
 
 	    LchSwap swap = PortfolioFactory.create5YPayerSwap();
 	    LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR);
@@ -592,6 +704,8 @@ public class InitialMarginExperiments {
 	}
 	
 	
+	
+	
 	private static RandomVariableSeries getFirstOrderTaylorTerm(RandomVariableSeries tenorPointScenario, RandomVariable sensitivity) {
 		HashMap<LocalDateTime, RandomVariable> pnlOnTenorPoint = new HashMap<>();
 		for (Map.Entry<LocalDateTime, RandomVariable> shift : tenorPointScenario.getSeries().entrySet()) {
@@ -614,7 +728,7 @@ public class InitialMarginExperiments {
 	private static List<RandomVariable> getLossesUnderFullRevaluation(LocalDateTime evaluationDate, LocalPortfolio localPortfolio, ZeroRateModel zeroRateModel, ForwardAndDiscountSensitivities sensitivities, Simulation simulation, Integer pathOrState) throws CalculationException {
 		ScenarioFactory scenarios = new ScenarioFactory(zeroRateModel, simulation);	
 		// Need sensitivity curve to call scenarios
-		SensitivityMatrix gammaMatrix = sensitivities.getDeltaSensitivities(evaluationDate);
+		SensitivityMatrix gammaMatrix = sensitivities.getGammaSensitivities(evaluationDate);
 		CurveScenarios curveScenarios = new CurveScenarios();		
 		// store one key for date array retrieval
 		double keyFixing = 0.0;
