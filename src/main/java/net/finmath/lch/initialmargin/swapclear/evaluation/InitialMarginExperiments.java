@@ -74,14 +74,27 @@ public class InitialMarginExperiments {
 	
 	public static void main (String[] args) throws CalculationException {
 				
+		
+		
+		LchSwap swap = PortfolioFactory.create15YReceiverSwap();
+		LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);	
+		
 		boolean movingWindow = true;
 		boolean pathWiseScenarios = false;
 		
-		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yReceiverSwap/IM 15yReceiverSwap - Base Moving Average.xlsx", "Paths", InitialMargin.PAIRS, pathWiseScenarios, movingWindow);
-				
+//		getInitialMarginPaths(localPortfolio, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yReceiverSwap/IM 15yReceiverSwap - Base Moving Average.xlsx", "Paths", InitialMargin.BASE, false, true);
+//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Floor Moving Average.xlsx", "Paths", InitialMargin.FLOOR, false, true);
+//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Floor Fixed Pathwise.xlsx", "Paths", InitialMargin.FLOOR, true, false);
+//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Floor Moving Pathwise.xlsx", "Paths", InitialMargin.FLOOR, true, true);
+//
+//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Base Fixed Average.xlsx", "Paths", InitialMargin.BASE, false, false);
+//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Base Moving Average.xlsx", "Paths", InitialMargin.BASE, false, true);
+//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Base Fixed Pathwise.xlsx", "Paths", InitialMargin.BASE, true, false);
+//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Base Moving Pathwise.xlsx", "Paths", InitialMargin.BASE, true, true);
+
 		
-//		getPnLFromTaylor("D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yReceiverSwap/PnL 15yReceiverSwap Full vs Taylor.xlsx", "Taylor");
-//		getPnLFromFullRevaluation("D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yReceiverSwap/PnL 15yReceiverSwap Full vs Taylor.xlsx", "Full");
+		getPnLFromTaylor("D:/Finanzmathematik/Masterthesis/Arbeit/Results/test.xlsx", "Taylor");
+		getPnLFromFullRevaluation("D:/Finanzmathematik/Masterthesis/Arbeit/Results/test.xlsx", "Full");
 		
 
 	}
@@ -89,13 +102,9 @@ public class InitialMarginExperiments {
 	
 	
 	
-	public static void getInitialMarginPaths(String filePath, String sheetName, InitialMargin type, boolean pathWiseEvaluation, boolean movingScenarioWindow) throws CalculationException {
+	public static void getInitialMarginPaths(LocalPortfolio localPortfolio, String filePath, String sheetName, InitialMargin type, boolean pathWiseEvaluation, boolean movingScenarioWindow) throws CalculationException {
 		final LIBORModelMonteCarloSimulationModel liborModel = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
 		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, liborModel, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
-		
-		LchSwap swap2 = PortfolioFactory.create15YReceiverSwap();
-
-		LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap2).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);		
 		
 	    ArrayList<LocalDateTime> dates = getDates(localPortfolio.getLastPaymentDate(), SchemeStorage.getLocalCalendar(Currency.EUR));
 	    
@@ -353,7 +362,7 @@ public class InitialMarginExperiments {
 		final LIBORModelMonteCarloSimulationModel liborModel = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
 		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, liborModel, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
 		
-	    LchSwap swap = PortfolioFactory.create5YPayerSwap();
+	    LchSwap swap = PortfolioFactory.create20YPayerSwap();
 	    LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);		
 		SensitivityComponentsForSwapLeg sensitivityComponents = new SensitivityComponentsForSwapLeg(localPortfolio.getSwaps(), zeroRateModel, zeroRateModel);	    
 		ForwardAndDiscountSensitivities sensitivities = new ForwardAndDiscountSensitivities(sensitivityComponents, TenorGridFactory.getTenorGrid(GridType.INITIAL_MARGIN_RISK_GRID));
@@ -403,7 +412,7 @@ public class InitialMarginExperiments {
 		final LIBORModelMonteCarloSimulationModel liborModel = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
 		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, liborModel, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
 		
-	    LchSwap swap = PortfolioFactory.create5YPayerSwap();
+	    LchSwap swap = PortfolioFactory.create20YPayerSwap();
 	    LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);		
 		SensitivityComponentsForSwapLeg sensitivityComponents = new SensitivityComponentsForSwapLeg(localPortfolio.getSwaps(), zeroRateModel, zeroRateModel);	    
 		ForwardAndDiscountSensitivities sensitivities = new ForwardAndDiscountSensitivities(sensitivityComponents, TenorGridFactory.getTenorGrid(GridType.INITIAL_MARGIN_RISK_GRID));

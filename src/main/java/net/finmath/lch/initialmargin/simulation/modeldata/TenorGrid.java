@@ -82,7 +82,19 @@ public class TenorGrid {
 			}
 		}
 	}
+	
+	
+	public double getFixingSmallest() {
+		ArrayList<Double> fixings = getFixings();
+		return fixings.get(0);
+	}
+	
    	
+	public double getFixingGreatest() {
+		ArrayList<Double> fixings = getFixings();
+		return fixings.get(fixings.size() - 1);
+	}
+	
 	
     /**
      * @param tenor The name of the tenor point

@@ -41,7 +41,7 @@ public class PortfolioFactory {
     }
     
     public static void main(String args[]) {
-		System.out.println(getParSwapRate(create15YPayerSwap()));
+		System.out.println(getParSwapRate(create20YPayerSwap()));
     }
 	
 	
@@ -211,7 +211,7 @@ public class PortfolioFactory {
 		
 		final LchNotional notional = new LchNotionalFromConstant(1.0);
 		final LchAbstractIndex floatIndex = new LchLIBORIndex(0.0, 0.25);
-		final double spread = 0.04;
+		final double spread = 0.0272816;
 		final Schedule schedule = ScheduleGenerator.createScheduleFromConventions(referenceDate, spotOffsetDays, forwardStartPeriod, maturity, frequency, daycountConvention, "first", "following", eurCalendar, -2, 0);
 		
 		final LchSwapLeg floatLeg_3M_EURIBOR = new LchSwapLeg(schedule, notional, floatIndex, 0.0, false /* isPayLeg*/, false /* isNotionalExchanged */);

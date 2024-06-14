@@ -34,10 +34,23 @@ public class DiscountSensitivities extends AbstractSensitvities {
 	private void calculateSensitivity(SensitivityMatrix sensitivityMatrix, SensitivityComponent component, int derivativeOrder) {
     	// Filter discount factors for selected discounting method and payment date
 		DiscountFactor discountFactor = component.getDiscountFactor(DiscountDate.PAYMENT);
-		// Discount sensitivity is just N * P(T;t) since rest cancels out with forward rate definition
-		RandomVariable sensitivity = component.getNotional().mult(Math.pow(-1, derivativeOrder + 1)).mult(discountFactor.getDerivative(derivativeOrder).mult(Math.pow(ZERO_RATE_SHIFT, derivativeOrder)));
+		RandomVariable coefficient;
+		// if no discount factor for period start -> fixed leg
+		if (component.getDiscountFactor(DiscountDate.PERIOD_START) == null) {
+			coefficient = getConstantCoefficient(component.getNotional(), component.getDayCountFraction(), component.isPayer()).mult(component.getRate());
+		} else {
+			coefficient = component.getNotional().mult(-1.0);
+			if (component.isPayer()) {
+				coefficient = coefficient.mult(-1.0);
+			}
+		}
+		RandomVariable sensitivity = coefficient.mult(discountFactor.getDerivative(derivativeOrder).mult(Math.pow(ZERO_RATE_SHIFT, derivativeOrder)));
 		// discount sensitivities do not have cross-gamma effects -> all mapped to the diagonal entries
-		mapSensitivityToMatrix(sensitivityMatrix, sensitivity, discountFactor.getTimeToMaturity(), discountFactor.getTimeToMaturity());
+		if(derivativeOrder == 1) {
+			mapDeltaToMatrix(sensitivityMatrix, sensitivity, discountFactor.getTimeToMaturity());
+		} else {
+			mapGammaToMatrix(sensitivityMatrix, sensitivity, discountFactor.getTimeToMaturity(), discountFactor.getTimeToMaturity());
+		}
 	}
 	
 

@@ -34,25 +34,16 @@ public class ForwardSensitivities extends AbstractSensitvities {
     	if (component.getDiscountFactor(DiscountDate.PERIOD_START) == null) {
     		return;
     	}
-    	// Filter discount factors for selected discounting method and payment date
-		DiscountFactor discountFactorPayment 		= component.getDiscountFactor(DiscountDate.PAYMENT);
-    	DiscountFactor discountFactorPeriodStart 	= component.getDiscountFactor(DiscountDate.PERIOD_START);
-    	DiscountFactor discountFactorPeriodEnd 		= component.getDiscountFactor(DiscountDate.PERIOD_END);
-		// get constant factors plus the discount factor for the payment date of the period
-    	RandomVariable coefficient = getConstantCoefficient(component.getNotional(), component.getDayCountFraction(), component.isPayer());
-    	coefficient = coefficient.mult(discountFactorPayment.getDiscountFactor());
-    	// we need the additional day count fraction between the period start and period end
-    	double dayCountFraction = discountFactorPeriodEnd.getTimeToMaturity() - discountFactorPeriodStart.getTimeToMaturity();
-    	// independent of derivative order one sensitivity for the period start bond and one for the period end bond
-        RandomVariable sensitivityPeriodStart = discountFactorPeriodStart.getDerivative(derivativeOrder).mult(Math.pow(ZERO_RATE_SHIFT, derivativeOrder)).div(discountFactorPeriodEnd.getDiscountFactor()).div(dayCountFraction).mult(coefficient);
-        RandomVariable sensitivityPeriodEnd = discountFactorPeriodStart.getDiscountFactor().mult(discountFactorPeriodEnd.getInverseDerivative(derivativeOrder).mult(Math.pow(ZERO_RATE_SHIFT, derivativeOrder))).div(dayCountFraction).mult(coefficient);
-		mapSensitivityToMatrix(sensitivityMatrix, sensitivityPeriodStart, discountFactorPeriodStart.getTimeToMaturity(), discountFactorPeriodStart.getTimeToMaturity());
-		mapSensitivityToMatrix(sensitivityMatrix, sensitivityPeriodEnd, discountFactorPeriodEnd.getTimeToMaturity(), discountFactorPeriodEnd.getTimeToMaturity());
-		// one additional sensitivity for the cross-gamma case
-		if (derivativeOrder == 2) {
-			RandomVariable crossGammaSensitivity = discountFactorPeriodStart.getDerivative(1).mult(discountFactorPeriodEnd.getInverseDerivative(1)).mult(Math.pow(ZERO_RATE_SHIFT, 2)).div(dayCountFraction).mult(coefficient);
-			// We construct an upper triangle matrix since the derivative order doesn't matter and thus gamma matrix is symmetric -> add sensitivity twice to one maturity combination
-			mapSensitivityToMatrix(sensitivityMatrix, crossGammaSensitivity.mult(2), discountFactorPeriodStart.getTimeToMaturity(), discountFactorPeriodEnd.getTimeToMaturity());
+    	DiscountFactor discountFactorPeriodStart = component.getDiscountFactor(DiscountDate.PERIOD_START);
+    	RandomVariable coefficient = component.getNotional();
+    	if (component.isPayer()) {
+    		coefficient = coefficient.mult(-1.0);
+    	}
+    	RandomVariable sensitivity = discountFactorPeriodStart.getDerivative(derivativeOrder).mult(Math.pow(ZERO_RATE_SHIFT, derivativeOrder)).mult(coefficient);
+		if (derivativeOrder == 1) {
+			mapDeltaToMatrix(sensitivityMatrix, sensitivity, discountFactorPeriodStart.getTimeToMaturity());
+		} else {
+	        mapGammaToMatrix(sensitivityMatrix, sensitivity, discountFactorPeriodStart.getTimeToMaturity(), discountFactorPeriodStart.getTimeToMaturity());
 		}
 	}
 	
