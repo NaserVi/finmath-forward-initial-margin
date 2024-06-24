@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.14" icons="true" automaticImage="PNG" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true" 
+  router="FAN">  
+  <class id="1" language="java" name="net.finmath.lch.initialmargin.simulation.modeldata.ZeroRateModel" 
+    project="finmath-forward-initial-margin" 
+    file="/finmath-forward-initial-margin/src/main/java/net/finmath/lch/initialmargin/simulation/modeldata/ZeroRateModel.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="231" y="372"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="net.finmath.lch.initialmargin.simulation.modeldata.ZeroCurveHistory" 
+    project="finmath-forward-initial-margin" 
+    file="/finmath-forward-initial-margin/src/main/java/net/finmath/lch/initialmargin/simulation/modeldata/ZeroCurveHistory.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="520" x="5" y="11"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="net.finmath.lch.initialmargin.simulation.modeldata.RandomVariableSeries" 
+    project="finmath-forward-initial-margin" 
+    file="/finmath-forward-initial-margin/src/main/java/net/finmath/lch/initialmargin/simulation/modeldata/RandomVariableSeries.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="951" y="579"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="net.finmath.lch.initialmargin.simulation.modeldata.StochasticCurve" 
+    project="finmath-forward-initial-margin" 
+    file="/finmath-forward-initial-margin/src/main/java/net/finmath/lch/initialmargin/simulation/modeldata/StochasticCurve.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="261" width="259" x="525" y="206"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="net.finmath.lch.initialmargin.simulation.scenarios.ScenarioBuilder" 
+    project="finmath-forward-initial-margin" 
+    file="/finmath-forward-initial-margin/src/main/java/net/finmath/lch/initialmargin/simulation/scenarios/ScenarioBuilder.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="354" y="684"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="6" language="java" 
+    name="net.finmath.lch.initialmargin.simulation.scenarios.ScenarioFactory.Simulation" 
+    project="finmath-forward-initial-margin" 
+    file="/finmath-forward-initial-margin/src/main/java/net/finmath/lch/initialmargin/simulation/scenarios/ScenarioFactory.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="942" y="855"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="7" language="java" name="net.finmath.lch.initialmargin.simulation.scenarios.ScenarioFactory" 
+    project="finmath-forward-initial-margin" 
+    file="/finmath-forward-initial-margin/src/main/java/net/finmath/lch/initialmargin/simulation/scenarios/ScenarioFactory.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="524" y="873"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="8" language="java" 
+    name="net.finmath.lch.initialmargin.simulation.ratetransformations.RateTransformation" 
+    project="finmath-forward-initial-margin" 
+    file="/finmath-forward-initial-margin/src/main/java/net/finmath/lch/initialmargin/simulation/ratetransformations/RateTransformation.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="138" y="873"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="9" language="java" name="net.finmath.lch.initialmargin.simulation.scenarios.CurveScenarios" 
+    project="finmath-forward-initial-margin" 
+    file="/finmath-forward-initial-margin/src/main/java/net/finmath/lch/initialmargin/simulation/scenarios/CurveScenarios.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="316" x="811" y="206"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="net.finmath.lch.initialmargin.swapclear.libormodels.ModelFactory" 
+    project="finmath-forward-initial-margin" 
+    file="/finmath-forward-initial-margin/src/main/java/net/finmath/lch/initialmargin/swapclear/libormodels/ModelFactory.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="570" x="557" y="11"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="11">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="12" name="zeroCurves">        
+        <position height="18" width="65" x="459" y="329"/>      
+      </attribute>      
+      <multiplicity id="13" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-13" y="-77"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="14">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="15" name="scenarioBuilder">        
+        <position height="18" width="83" x="375" y="798"/>      
+      </attribute>      
+      <multiplicity id="16" minimum="0" maximum="1">        
+        <position height="16" width="23" x="469" y="791"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="17">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="6"/>  
+  </nesting>  
+  <association id="18">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="19" name="rateTransformations">        
+        <position height="0" width="0" x="-828" y="825"/>      
+      </attribute>      
+      <multiplicity id="20" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="220" y="800"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="21">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="22" name="zeroRateModel">        
+        <position height="0" width="0" x="20" y="-57"/>      
+      </attribute>      
+      <multiplicity id="23" minimum="0" maximum="1">        
+        <position height="16" width="23" x="312" y="552"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="24">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="25" name="simulation">        
+        <position height="18" width="55" x="758" y="847"/>      
+      </attribute>      
+      <multiplicity id="26" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-51" y="474"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="27">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="28" name="curveScenarios">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="29" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

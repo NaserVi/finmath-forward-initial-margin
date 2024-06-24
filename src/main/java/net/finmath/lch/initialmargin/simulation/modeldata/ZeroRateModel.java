@@ -125,7 +125,7 @@ public class ZeroRateModel {
 	 * @throws CalculationException
 	 */
 	public NavigableMap<LocalDateTime, RandomVariable> getRateSeries(LocalDateTime evaluationDate, double periodLength) throws CalculationException {
-		// check if periodLength exceeds minimal or maximal periodLenght available in history.
+		// check if periodLength exceeds minimal or maximal periodLength available in history.
 		// Necessary for scenario sampling of "xM" curves, e.g. 3M LIBOR. Since historical data set starts with 3M fixing and if sensitivities for 1d point call the respective scenarios for 1d 
 		// we need a constant extrapolation of the 3M point and adjust the model rates fixing to "continue" with this fixing
 		if (periodLength < zeroCurves.firstEntry().getValue().getFixingSmallest()) {

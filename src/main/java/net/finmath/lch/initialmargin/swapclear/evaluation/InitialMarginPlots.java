@@ -32,10 +32,10 @@ public class InitialMarginPlots {
 		final LIBORModelMonteCarloSimulationModel liborModel = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
 		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, liborModel, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
 
-		LchSwap swap1 = PortfolioFactory.create5YReceiverSwap();
-		LchSwap swap2 = PortfolioFactory.create10YReceiverSwap();
-		LchSwap swap3 = PortfolioFactory.create10YPayerSwap();
-		LocalPortfolio swapPortfolio = PortfolioFactory.getSwapPortfolio(swap3).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);		
+		LchSwap swap1 = PortfolioFactory.create20YReceiverSwap();
+		LchSwap swap2 = PortfolioFactory.create10YPayerSwap();
+		LchSwap swap3 = PortfolioFactory.create15YReceiverSwap();
+		LocalPortfolio swapPortfolio = PortfolioFactory.getSwapPortfolio(swap1).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);		
 	    double stepSize = 0.125;
 		boolean movingWindow = false;
 		boolean pathWiseScenarios = false;

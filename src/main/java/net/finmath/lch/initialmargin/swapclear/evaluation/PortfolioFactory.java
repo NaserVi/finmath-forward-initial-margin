@@ -109,7 +109,7 @@ public class PortfolioFactory {
 		final String		frequency = "quarterly";
 		final String		daycountConvention = "30/360"; 
 		
-		final LchNotional notional = new LchNotionalFromConstant(1.0);
+		final LchNotional notional = new LchNotionalFromConstant(10000.0);
 		final LchAbstractIndex floatIndex = new LchLIBORIndex(0.0, 0.25);
 		final double spread = 0.0266132;
 		final Schedule schedule = ScheduleGenerator.createScheduleFromConventions(referenceDate, spotOffsetDays, forwardStartPeriod, maturity, frequency, daycountConvention, "first", "following", eurCalendar, -2, 0);
@@ -221,6 +221,31 @@ public class PortfolioFactory {
 		return swap_3M_EURIBOR;	
 	}
 
+	public static LchSwap create20YReceiverSwap() {		
+		// Create 5y EUR swap on 3M EURIBOR
+		final Currency euro = Currency.EUR;
+		final BusinessdayCalendar eurCalendar = SchemeStorage.getLocalCalendar(euro);
+		
+		final CurveName euribor3m = CurveName.EUR_EURIBOR_3M;
+		final LocalDate	referenceDate = LocalDate.of(2024, Month.FEBRUARY, 05);
+		final int			spotOffsetDays = 2;
+		final String		forwardStartPeriod = "0D";
+		final String		maturity = "20Y";
+		final String		frequency = "quarterly";
+		final String		daycountConvention = "30/360"; 
+		
+		final LchNotional notional = new LchNotionalFromConstant(1.0);
+		final LchAbstractIndex floatIndex = new LchLIBORIndex(0.0, 0.25);
+		final double spread = 0.0272816;
+		final Schedule schedule = ScheduleGenerator.createScheduleFromConventions(referenceDate, spotOffsetDays, forwardStartPeriod, maturity, frequency, daycountConvention, "first", "following", eurCalendar, -2, 0);
+		
+		final LchSwapLeg floatLeg_3M_EURIBOR = new LchSwapLeg(schedule, notional, floatIndex, 0.0, true /* isPayLeg*/, false /* isNotionalExchanged */);
+		final LchSwapLeg fixLeg_3M_EURIBOR = new LchSwapLeg(schedule, notional, null, spread, false /* isPayLeg*/, false /* isNotionalExchanged */);
+		final LchSwap swap_3M_EURIBOR = new LchSwap(euro, euribor3m, floatLeg_3M_EURIBOR, fixLeg_3M_EURIBOR);
+		
+		return swap_3M_EURIBOR;	
+	}
+	
 	public static double getParSwapRate(LchSwap swap) {	
 		int numberOfPeriods = swap.getLegReceiver().getSchedule().getNumberOfPeriods();
 		final double[]	swapTenor = new double[numberOfPeriods + 1];

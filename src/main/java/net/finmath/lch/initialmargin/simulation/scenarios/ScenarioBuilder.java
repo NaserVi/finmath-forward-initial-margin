@@ -27,6 +27,7 @@ public class ScenarioBuilder {
     }
     
 
+    // For moving scenario window with additional stress period
     public RandomVariableSeries getTenorPointScenarios(LocalDateTime evaluationDate, double tenorFixing, int numberOfMovingScenarios, LocalDateTime startDateFixedScenarios, LocalDateTime endDateFixedScenarios) throws CalculationException {
     	NavigableMap<LocalDateTime, RandomVariable> scenarios = getTransformedRateSeries(evaluationDate, tenorFixing);
     	RandomVariableSeries randomVariableSeries = new RandomVariableSeries(getRatesForLastNDays(scenarios, evaluationDate, numberOfMovingScenarios));
@@ -35,14 +36,14 @@ public class ScenarioBuilder {
     }
     
     
-    // For moving scenario period with fixed length
+    // For moving scenario window with fixed length
     public RandomVariableSeries getTenorPointScenarios(LocalDateTime evaluationDate, double tenorFixing, int numberOfScenarios) throws CalculationException {
 		NavigableMap<LocalDateTime, RandomVariable> scenarios =  getTransformedRateSeries(evaluationDate, tenorFixing);
     	return new RandomVariableSeries(getRatesForLastNDays(scenarios, evaluationDate, numberOfScenarios));
     }
   
     
-    // For moving scenario period that starts at beginning of available data and extends over time
+    // For moving scenario window that starts at beginning of available data and extends over time
     public RandomVariableSeries getTenorPointScenarios(LocalDateTime evaluationDate, double tenorFixing) throws CalculationException {
     	return new RandomVariableSeries(new HashMap<>(getTransformedRateSeries(evaluationDate, tenorFixing)));
     }

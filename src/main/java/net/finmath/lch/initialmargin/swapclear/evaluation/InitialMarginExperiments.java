@@ -75,28 +75,39 @@ public class InitialMarginExperiments {
 	public static void main (String[] args) throws CalculationException {
 				
 		
-		
-		LchSwap swap = PortfolioFactory.create15YReceiverSwap();
-		LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);	
-		
+		LchSwap swap1 = PortfolioFactory.create15YPayerSwap();
+		LchSwap swap2 = PortfolioFactory.create15YReceiverSwap();
+
+		LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap1).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);	
+		LocalPortfolio localPortfolio2 = PortfolioFactory.getSwapPortfolio(swap2).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);	
+
 		boolean movingWindow = true;
 		boolean pathWiseScenarios = false;
 		
-//		getInitialMarginPaths(localPortfolio, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yReceiverSwap/IM 15yReceiverSwap - Base Moving Average.xlsx", "Paths", InitialMargin.BASE, false, true);
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Floor Moving Average.xlsx", "Paths", InitialMargin.FLOOR, false, true);
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Floor Fixed Pathwise.xlsx", "Paths", InitialMargin.FLOOR, true, false);
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Floor Moving Pathwise.xlsx", "Paths", InitialMargin.FLOOR, true, true);
-//
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Base Fixed Average.xlsx", "Paths", InitialMargin.BASE, false, false);
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Base Moving Average.xlsx", "Paths", InitialMargin.BASE, false, true);
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Base Fixed Pathwise.xlsx", "Paths", InitialMargin.BASE, true, false);
-//		getInitialMarginPaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayerSwap/IM 5yPayerSwap - Base Moving Pathwise.xlsx", "Paths", InitialMargin.BASE, true, true);
+//		getInitialMarginPaths(localPortfolio, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yPayerSwap/IM 15yPayerSwap - Pairs Fixed Average.xlsx", "Paths", InitialMargin.PAIRS, false, false);
+//		getInitialMarginPaths(localPortfolio, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yPayerSwap/IM 15yPayerSwap - Pairs Moving Average.xlsx", "Paths", InitialMargin.PAIRS, false, true);
+//		getInitialMarginPaths(localPortfolio, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yPayerSwap/IM 15yPayerSwap - Pairs Fixed Pathwise.xlsx", "Paths", InitialMargin.PAIRS, true, false);
+//		getInitialMarginPaths(localPortfolio, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yPayerSwap/IM 15yPayerSwap - Pairs Moving Pathwise.xlsx", "Paths", InitialMargin.PAIRS, true, true);
+
+//		getInitialMarginPaths(localPortfolio2, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yReceiverSwap/IM 15yReceiverSwap - Pairs Fixed Average.xlsx", "Paths", InitialMargin.PAIRS, false, false);
+//		getInitialMarginPaths(localPortfolio2, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yReceiverSwap/IM 15yReceiverSwap - Pairs Moving Average.xlsx", "Paths", InitialMargin.PAIRS, false, true);
+		getInitialMarginPaths(localPortfolio2, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yReceiverSwap/IM 15yReceiverSwap - Pairs Fixed Pathwise.xlsx", "Paths", InitialMargin.PAIRS, true, false);
+		getInitialMarginPaths(localPortfolio2, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/15yReceiverSwap/IM 15yReceiverSwap - Pairs Moving Pathwise.xlsx", "Paths", InitialMargin.PAIRS, true, true);
+
+//		getInitialMarginPaths(localPortfolio, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayer + 15yReceiver/IM 5yPayer + 15yReceiver - Base Fixed Average.xlsx", "Paths", InitialMargin.BASE, false, false);
+//		getInitialMarginPaths(localPortfolio, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayer + 15yReceiver/IM 5yPayer + 15yReceiver - Base Moving Average.xlsx", "Paths", InitialMargin.BASE, false, true);
+//		getInitialMarginPaths(localPortfolio, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayer + 15yReceiver/IM 5yPayer + 15yReceiver - Base Fixed Pathwise.xlsx", "Paths", InitialMargin.BASE, true, false);
+//		getInitialMarginPaths(localPortfolio, "D:/Finanzmathematik/Masterthesis/Arbeit/Results/5yPayer + 15yReceiver/IM 5yPayer + 15yReceiver - Base Moving Pathwise.xlsx", "Paths", InitialMargin.BASE, true, true);
+		
+//		getSwapValuePaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/SwapTests/LegTest.xlsx", "Classic", false);
+//		getSwapValuePaths("D:/Finanzmathematik/Masterthesis/Arbeit/Results/SwapTests/LegTest.xlsx", "Zero", true);
 
 		
-		getPnLFromTaylor("D:/Finanzmathematik/Masterthesis/Arbeit/Results/test.xlsx", "Taylor");
-		getPnLFromFullRevaluation("D:/Finanzmathematik/Masterthesis/Arbeit/Results/test.xlsx", "Full");
-		
+//		getPnLFromTaylor("D:/Finanzmathematik/Masterthesis/Arbeit/Results/SwapTests/10ySwap PnL Taylor vs Full future ES.xlsx", "Taylor");
+//		getPnLFromFullRevaluation("D:/Finanzmathematik/Masterthesis/Arbeit/Results/SwapTests/10ySwap PnL Taylor vs Full future ES.xlsx", "Full");
+	
 
+		
 	}
 	
 	
@@ -140,7 +151,7 @@ public class InitialMarginExperiments {
         			paths = localPortfolio.getBaseInitialMargin(dates.get(i), zeroRateModel, pathWiseEvaluation, movingScenarioWindow).getRealizations();
         			break;
         		case PAIRS:
-        			paths = localPortfolio.getBaseInitialMargin(dates.get(i), zeroRateModel, pathWiseEvaluation, movingScenarioWindow).getRealizations();
+        			paths = localPortfolio.getPairsInitialMargin(dates.get(i), zeroRateModel, pathWiseEvaluation, movingScenarioWindow).getRealizations();
         			break;
         		default:
         			throw new IllegalArgumentException("Initial Margin type not defined.");
@@ -171,7 +182,7 @@ public class InitialMarginExperiments {
 		final LIBORModelMonteCarloSimulationModel model = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
 		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, model, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
 
-	    LchSwap swap = PortfolioFactory.create5YPayerSwap();
+	    LchSwapLeg swap = PortfolioFactory.create10YReceiverSwap().getLegReceiver();
 	    ArrayList<LocalDateTime> dates = getDates(swap.getLastPaymentDate(), SchemeStorage.getLocalCalendar(Currency.EUR));
 
 		try {
@@ -362,11 +373,11 @@ public class InitialMarginExperiments {
 		final LIBORModelMonteCarloSimulationModel liborModel = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
 		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, liborModel, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
 		
-	    LchSwap swap = PortfolioFactory.create20YPayerSwap();
+	    LchSwap swap = PortfolioFactory.create10YPayerSwap();
 	    LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);		
 		SensitivityComponentsForSwapLeg sensitivityComponents = new SensitivityComponentsForSwapLeg(localPortfolio.getSwaps(), zeroRateModel, zeroRateModel);	    
 		ForwardAndDiscountSensitivities sensitivities = new ForwardAndDiscountSensitivities(sensitivityComponents, TenorGridFactory.getTenorGrid(GridType.INITIAL_MARGIN_RISK_GRID));
-		HashMap<LocalDateTime, RandomVariable> pnL = getPnL(REFERENCE_DATE, zeroRateModel, sensitivities, Simulation.VALUE_AT_RISK, false).getSeries();
+		HashMap<LocalDateTime, RandomVariable> pnL = getPnL(REFERENCE_DATE.plusDays(1250), zeroRateModel, sensitivities, Simulation.EXPECTED_SHORTFALL_6, false).getSeries();
 	    
 		try {
             // Check if file exists
@@ -412,14 +423,14 @@ public class InitialMarginExperiments {
 		final LIBORModelMonteCarloSimulationModel liborModel = ModelFactory.getModel(CurveName.EUR_EURIBOR_3M);
 		final ZeroRateModel zeroRateModel = new ZeroRateModel(Currency.EUR, CurveName.EUR_EURIBOR_3M, liborModel, "spreadsheets/EUR_EURIBOR_3M_Input_Data.xlsx");
 		
-	    LchSwap swap = PortfolioFactory.create20YPayerSwap();
+	    LchSwap swap = PortfolioFactory.create10YPayerSwap();
 	    LocalPortfolio localPortfolio = PortfolioFactory.getSwapPortfolio(swap).getLocalPortfolio(Currency.EUR); //, swap10Y, swap10YPlusSpread);		
 		SensitivityComponentsForSwapLeg sensitivityComponents = new SensitivityComponentsForSwapLeg(localPortfolio.getSwaps(), zeroRateModel, zeroRateModel);	    
 		ForwardAndDiscountSensitivities sensitivities = new ForwardAndDiscountSensitivities(sensitivityComponents, TenorGridFactory.getTenorGrid(GridType.INITIAL_MARGIN_RISK_GRID));
 	    
-		ScenarioFactory scenarios = new ScenarioFactory(zeroRateModel, Simulation.VALUE_AT_RISK);	
+		ScenarioFactory scenarios = new ScenarioFactory(zeroRateModel, Simulation.EXPECTED_SHORTFALL_6);	
 		// Need sensitivity curve to call scenarios
-		SensitivityMatrix gammaMatrix = sensitivities.getGammaSensitivities(REFERENCE_DATE);
+		SensitivityMatrix gammaMatrix = sensitivities.getGammaSensitivities(REFERENCE_DATE.plusDays(1250));
 		CurveScenarios curveScenarios = new CurveScenarios();		
 		// store one key for date array retrieval
 		double keyFixing = 0.0;
@@ -443,10 +454,10 @@ public class InitialMarginExperiments {
 		List<RandomVariable> pnL = new ArrayList<RandomVariable>(Collections.nCopies(dates.size(), new Scalar(0.0)));
 
 		for (LchSwapLeg swapLeg : localPortfolio.getSwaps()) {
-			RandomVariable netPresentValue = swapLeg.getValue(REFERENCE_DATE, zeroRateModel, null, null); // no shift
+			RandomVariable netPresentValue = swapLeg.getValue(REFERENCE_DATE.plusDays(1250), zeroRateModel, null, null); // no shift
 			for (int index = 0; index < dates.size(); index++) {
 				// get shifted value for elements of worstDates on all paths
-				RandomVariable shiftedNetPresentValue = swapLeg.getValue(REFERENCE_DATE, zeroRateModel, curveScenarios.getCurveShifts(dates.get(index)), null); 
+				RandomVariable shiftedNetPresentValue = swapLeg.getValue(REFERENCE_DATE.plusDays(1250), zeroRateModel, curveScenarios.getCurveShifts(dates.get(index)), null); 
 				// directly update / sum up the losses of all swap legs: NPV_s - NPV 
 				pnL.set(index, pnL.get(index).add(shiftedNetPresentValue.sub(netPresentValue))); 
 			}
@@ -667,8 +678,9 @@ public class InitialMarginExperiments {
 	
 	private static RandomVariableSeries getPnL(LocalDateTime evaluationDate, ZeroRateModel zeroRateModel, ForwardAndDiscountSensitivities sensitivities, Simulation simulation, boolean movingScenarioWindow) throws CalculationException {	
 		// if movingScenarioWindow == false we restrict the scenario window to historical scenarios only -> the scenarios are not moving with the model
+		LocalDateTime scenarioDate = evaluationDate;
 		if(!movingScenarioWindow) {
-			evaluationDate = zeroRateModel.getReferenceDate();
+			scenarioDate = zeroRateModel.getReferenceDate();
 		}
 		ScenarioFactory scenarios = new ScenarioFactory(zeroRateModel, simulation);	
 		SensitivityMatrix deltaMatrix = sensitivities.getDeltaSensitivities(evaluationDate);
@@ -686,7 +698,7 @@ public class InitialMarginExperiments {
 			if (curveScenarios.containsSeries(row.getKey())) {
 				rowScenarios = curveScenarios.getSeries(row.getKey());
 			} else {
-				rowScenarios = scenarios.getTenorPointScenarios(evaluationDate, row.getKey());
+				rowScenarios = scenarios.getTenorPointScenarios(scenarioDate, row.getKey());
 				// Add the tenorPointScenario to the TenorGridSeries for later curve construction
 				curveScenarios.addSeries(row.getKey(), rowScenarios);
 			}
@@ -700,7 +712,7 @@ public class InitialMarginExperiments {
 				if (curveScenarios.containsSeries(column.getKey())) {
 					columnScenarios = curveScenarios.getSeries(column.getKey());
 				} else {
-					columnScenarios = scenarios.getTenorPointScenarios(evaluationDate, column.getKey());
+					columnScenarios = scenarios.getTenorPointScenarios(scenarioDate, column.getKey());
 					// Add the tenorPointScenario to the TenorGridSeries for later curve construction
 					curveScenarios.addSeries(column.getKey(), columnScenarios);
 				}

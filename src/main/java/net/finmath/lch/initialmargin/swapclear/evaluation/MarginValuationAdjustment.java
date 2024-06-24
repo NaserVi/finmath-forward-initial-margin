@@ -60,28 +60,27 @@ public class MarginValuationAdjustment {
 		
 		// Create a portfolio of swaps belonging to the same currency, but not necessarily same index 
 		LchSwap swap1 = PortfolioFactory.create5YPayerSwap();
-		LchSwap swap2 = PortfolioFactory.create5YReceiverSwap();
-
-		LocalPortfolio swapPortfolio = PortfolioFactory.getSwapPortfolio(swap1).getLocalPortfolio(Currency.EUR); 
+		LchSwap swap2 = PortfolioFactory.create15YReceiverSwap();
+		LocalPortfolio swapPortfolio = PortfolioFactory.getSwapPortfolio(swap1, swap2).getLocalPortfolio(Currency.EUR); 
 
 		// Calculate MVA of the portfolio 
 		int daysPerStep = 1;
 		double fundingSpread = 0.005;
 		
-		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.FLOOR, false, false);
-		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.FLOOR, false, true);
-		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.FLOOR, true, false);
-		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.FLOOR, true, true);
-		
-		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.BASE, false, false);
-		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.BASE, false, true);
-		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.BASE, true, false);
-		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.BASE, true, true);
-		
-		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.PAIRS, false, false);
-		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.PAIRS, false, true);
-		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.PAIRS, true, false);
-		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.PAIRS, true, true);
+//		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.FLOOR, false, false);
+//		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.FLOOR, false, true);
+//		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.FLOOR, true, false);
+//		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.FLOOR, true, true);
+//		
+//		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.BASE, false, false);
+//		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.BASE, false, true);
+//		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.BASE, true, false);
+//		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.BASE, true, true);
+//		
+//		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.PAIRS, false, false);
+//		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.PAIRS, false, true);
+//		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.PAIRS, true, false);
+//		getMVA(swapPortfolio, zeroRateModel, liborModel, REFERENCE_DATE, daysPerStep, fundingSpread, InitialMargin.PAIRS, true, true);
 				
 
 	}
@@ -121,7 +120,7 @@ public class MarginValuationAdjustment {
 				default:
 					throw new IllegalArgumentException("Initial Margin type not defined.");
 				}
-//				System.out.println("Initial Margin as of " + date +": " + initialMargin.getAverage());
+				System.out.println("Initial Margin as of " + date +": " + initialMargin.getAverage());
 				// d(1/N^fd(t)) = 1/N^fd(t_i+1) - 1/N^fd(t_i)
 				RandomVariable fundingNumeraire = liborModel.getNumeraire(nextTime).mult(Math.exp((nextTime) * fundingSpread)).invert();
 				fundingNumeraire = fundingNumeraire.sub(liborModel.getNumeraire(time).mult(Math.exp(time * fundingSpread)).invert());
